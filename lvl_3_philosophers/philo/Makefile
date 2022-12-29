@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2022/12/29 15:55:59 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2022/12/29 18:28:34 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,7 @@ NAME = philo
 SRCS =  srcs/utils/on_error.c\
 		srcs/utils/long_atoi.c\
 		srcs/input/validate_args.c\
+		srcs/monitoring.c\
 	   	main.c
 
 OBJS = $(SRCS:.c=.o)

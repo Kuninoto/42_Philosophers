@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 15:57:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/29 18:41:11 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdio.h> // printf()
 #include <stdlib.h> // malloc(), free()
 #include <unistd.h> // write(), usleep()
-#include <time.h> // gettimeofday()
+#include <sys/time.h> // gettimeofday()
 #include <pthread.h> // POSIX thread API
 #include <stdbool.h>
 
@@ -58,7 +58,15 @@ static inline void	fill_args(t_args *args, char **argv)
 		args->nbr_of_times_each_philo_must_eat = long_atoi(argv[5]);
 }
 
+typedef enum	e_event_id {
+	DEAD,
+	EAT,
+	THINK,
+	SLEEP,
+}				t_event_id;
 
+// Prints activity logs
+void	monitoring(t_args *args, t_event_id event);
 
 // UTILS --------------------------
 

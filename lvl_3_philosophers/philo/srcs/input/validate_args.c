@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:46:47 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 15:57:53 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/29 18:42:58 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	is_all_digits(char **argv)
 		while (argv[i][j])
 		{
 			if (isdigit_or_signal(argv[i][j++]) == false)
-				on_error("Not all arguments are digits");
+				on_error("Not all arguments are numbers");
 		}
 		i++;
 	}
@@ -31,7 +31,7 @@ void	is_all_digits(char **argv)
 
 void	validate_args(int argc, char **argv)
 {
-	if (argc < 5 || argc > 6)
+	if (argc != 5 && argc != 6)
 		on_error("Invalid number of arguments");
 	is_all_digits(argv);
 }
