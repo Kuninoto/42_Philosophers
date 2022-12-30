@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/30 00:30:08 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/30 00:52:21 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,12 @@ int main(int argc, char **argv)
 	if (pthread_mutex_init(&mutex, NULL) != 0)
         on_error("Mutex init has failed"); */
 
-	pthread_t *t_ids;
+/* 	pthread_t *t_ids;
 	t_ids = malloc(args.nbr_of_philo * sizeof(pthread_t));
 	if (!t_ids)
 		on_error("Failed to allocate memory for t_ids");
 	create_n_join_threads(&args, t_ids);
-
+ */
 
 //	pthread_mutex_destroy(&mutex);
 	monitoring(&args, DEAD);
