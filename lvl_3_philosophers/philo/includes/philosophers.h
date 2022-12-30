@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 23:35:54 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/30 18:47:19 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,25 @@ static inline t_args init_args(void) {
 		.time_to_die = 0,
 		.time_to_eat = 0,
 		.time_to_sleep = 0,
-		.nbr_of_times_each_philo_must_eat = 0,
+		.nbr_of_times_each_philo_must_eat = -1,
+	});
+}
+
+typedef struct	s_philo {
+	pthread_t			t_id;
+	int					fork;
+	int					time_to_die;
+	int					time_to_eat;
+	int					time_to_sleep;
+}				t_philo;
+
+static inline t_philo init_philo(t_args *args) {
+	return ((t_philo){
+		.t_id = 0,
+		.fork = 1,
+		.time_to_die = args->time_to_die,
+		.time_to_eat = args->time_to_eat,
+		.time_to_sleep = args->time_to_sleep,
 	});
 }
 
@@ -66,7 +84,7 @@ typedef enum	e_event_id {
 }				t_event_id;
 
 // Prints Philosophers' activity logs
-void	monitoring(t_args *args, t_event_id event);
+void	monitoring(t_event_id event);
 
 // UTILS --------------------------
 

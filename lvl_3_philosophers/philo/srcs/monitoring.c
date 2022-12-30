@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/30 00:51:37 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/30 16:30:21 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@
 #define THINK_EMOJI "🤔"
 #define SLEEP_EMOJI "😴"
 
-void	monitoring(t_args *args, t_event_id event)
+void	monitoring(t_event_id event)
 {
-	(void)args;
-
 	printf("\nAt: %d\n"
 		   "Philosopher: %d\n" 
 		   "Action: ", 
@@ -32,5 +30,5 @@ void	monitoring(t_args *args, t_event_id event)
 	else if (event == THINK)
 		printf("Thinking %s\n", THINK_EMOJI);
 	else if (event == SLEEP)
-		printf("Sleeping %s\n", SLEEP_EMOJI);
+		printf("A mimir %s\n", SLEEP_EMOJI);
 }
