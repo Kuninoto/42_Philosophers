@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
+#    By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2022/12/29 22:19:32 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2022/12/30 18:46:45 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,8 +15,8 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 
 NAME = philo
-SRCS =  srcs/utils/on_error.c\
-		srcs/utils/long_atoi.c\
+SRCS =  srcs/utils/long_atoi.c\
+		srcs/utils/on_error.c\
 		srcs/input/validate_args.c\
 		srcs/monitoring.c\
 	   	main.c
