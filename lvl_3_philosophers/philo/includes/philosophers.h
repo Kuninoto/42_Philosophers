@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 18:41:11 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/29 23:35:54 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 #include <unistd.h> // write(), usleep()
 #include <sys/time.h> // gettimeofday()
 #include <pthread.h> // POSIX thread API
-#include <stdbool.h>
+#include <stdbool.h> // boolean data type
 
 typedef struct	s_args {
 	int nbr_of_philo;
@@ -44,7 +44,7 @@ static inline t_args init_args(void) {
 /* Checks if all arguments provided are digits */
 void	validate_args(int argc, char **argv);
 
-/* Atoi reimplementation, exits on failure if the result 
+/* Atoi reimplementation. Exits the program on failure if the result 
    would overflow an integer or if it would be negative */
 int	long_atoi(char *str);
 
@@ -65,22 +65,22 @@ typedef enum	e_event_id {
 	SLEEP,
 }				t_event_id;
 
-// Prints activity logs
+// Prints Philosophers' activity logs
 void	monitoring(t_args *args, t_event_id event);
 
 // UTILS --------------------------
 
-/* Prints Error: error_msg, followed by a newline
+/* Prints Error: error_msg, followed by a newline,
 to STDERR and exits the program on failure */
 void	on_error(char *error_msg);
 
-/* Checks if c is a character that represents a digit */
+/* Checks if c is a character that represents a digit or a signal */
 static inline bool	isdigit_or_signal(char c) { 
 	if ((c >= '0' && c <= '9')
 	|| (c == '+' || c == '-'))
-		return (true); 
-	else 
-		return (false); 
+		return (true);
+	else
+		return (false);
 };
 
 #endif

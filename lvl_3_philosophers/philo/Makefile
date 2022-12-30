@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2022/12/29 18:28:34 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2022/12/29 22:19:32 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,7 +26,7 @@ OBJS = $(SRCS:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -pthread -o philo
+	$(CC) $(CFLAGS) -pthread $(OBJS) -o philo
 
 clean:
 	$(RM) $(OBJS)

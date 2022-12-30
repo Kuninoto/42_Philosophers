@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 19:15:10 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/29 21:34:34 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,16 @@ void	monitoring(t_args *args, t_event_id event)
 {
 	(void)args;
 
-	event = DEAD;
 	printf("At: %d\n"
 		   "Philosopher: %d\n" 
 		   "Action: ", 
 			10, 1);
 	if (event == DEAD)
-		printf("%s\n", DEAD_EMOJI);
+		printf("Died %s\n", DEAD_EMOJI);
 	else if (event == EAT)
-		printf("%s\n", EAT_EMOJI);
+		printf("Eating %s\n", EAT_EMOJI);
 	else if (event == THINK)
-		printf("%s\n", THINK_EMOJI);
+		printf("Thinking %s\n", THINK_EMOJI);
 	else if (event == SLEEP)
-		printf("%s\n", SLEEP_EMOJI);
+		printf("Sleeping %s\n", SLEEP_EMOJI);
 }
