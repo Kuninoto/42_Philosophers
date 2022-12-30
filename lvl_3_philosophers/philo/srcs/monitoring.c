@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 21:34:34 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2022/12/30 00:51:37 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	monitoring(t_args *args, t_event_id event)
 {
 	(void)args;
 
-	printf("At: %d\n"
+	printf("\nAt: %d\n"
 		   "Philosopher: %d\n" 
 		   "Action: ", 
 			10, 1);
