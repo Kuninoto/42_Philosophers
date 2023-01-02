@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/30 19:04:25 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/02 19:01:59 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,44 @@
 
 // t_id stands for thread identifier (id).
 
-int counter = 0;
-
-void	*routine(void *mutex)
+void	*routine(void *routine_args)
 {
+	t_routine_args *casted;
+	int				philo_nbr;
 
-	// usleep(args->time_to_sleep);
-	pthread_mutex_lock(mutex); // lock = 1
-    counter++;
- 	printf("\n Thread %d has started\n", counter);
-	
-    sleep(2);
+	casted = (t_routine_args *)routine_args;
+	philo_nbr = casted->philo_num + 1;
 
-	printf("\n Thread %d has finished\n", counter);
-	pthread_mutex_unlock(mutex); // lock = 0
+	if (philo_nbr == casted->nbr_of_philo) 
+	{
+		pthread_mutex_lock(casted->right_fork);
+		printf("Philosopher %d picked up his right fork.\n", philo_nbr);
+		pthread_mutex_lock(casted->left_fork);
+		printf("Philosopher %d picked up his left fork and started eating.\n", philo_nbr);
+	}
+	else
+	{
+		pthread_mutex_lock(casted->left_fork);
+		printf("Philosopher %d picked up his left fork.\n", philo_nbr);
+		pthread_mutex_lock(casted->right_fork);
+		printf("Philosopher %d picked up his right fork and started eating.\n", philo_nbr);
+	}
+	usleep(3);
+	pthread_mutex_unlock(casted->left_fork);
+	pthread_mutex_unlock(casted->right_fork);
 	return (NULL);
 }
 
 void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 {
 	int i;
+	t_routine_args routine_args;
 
 	i = 0;
-	while (i < args->nbr_of_philo)
+	while (i < (args->nbr_of_philo - 1))
 	{
-		if (pthread_create(&philos[i].t_id, NULL, routine, &forks[0]) != 0)
+		routine_args = init_routine_args(args, &forks[i], &forks[(i - 1) % args->nbr_of_philo], i);
+		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&routine_args) != 0)
 		{
 			free(philos);
 			on_error("Failed to create a thread");
@@ -51,7 +64,7 @@ void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 			free(philos);
 			on_error("Failed to detach a thread");
 		}
-		printf("philos[%d].t_id = %lu\n", i, philos[i].t_id);
+		//printf("philos[%d].t_id = %lu\n", i, philos[i].t_id);
 		i++;
 	}
 }
