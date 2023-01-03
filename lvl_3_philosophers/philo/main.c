@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/02 19:01:59 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/03 18:59:32 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,11 @@ void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 	t_routine_args routine_args;
 
 	i = 0;
-	while (i < (args->nbr_of_philo - 1))
+	while (i < args->nbr_of_philo)
 	{
-		routine_args = init_routine_args(args, &forks[i], &forks[(i - 1) % args->nbr_of_philo], i);
+		printf("left fork index = %d\n", i);
+		printf("right fork index = %d\n\n", i + 1);
+		routine_args = init_routine_args(args, &forks[i], &forks[(i + 1)], i);
 		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&routine_args) != 0)
 		{
 			free(philos);
@@ -130,10 +132,3 @@ int main(int argc, char **argv)
 	
 	return (EXIT_SUCCESS);
 }
-
-/* 	printf("%d\n", args.nbr_of_philo);
-	printf("%d\n", args.time_to_die);
-	printf("%d\n", args.time_to_eat);
-	printf("%d\n", args.time_to_sleep);
-	if (args.nbr_of_times_each_philo_must_eat)
-		printf("%d\n", args.nbr_of_times_each_philo_must_eat); */
