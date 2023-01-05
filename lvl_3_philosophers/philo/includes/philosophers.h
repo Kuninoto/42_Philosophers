@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 18:42:10 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/05 21:59:35 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ typedef struct s_args {
 	int	time_to_die;
 	int	time_to_eat;
 	int	time_to_sleep;
-	int	nbr_of_times_each_philo_must_eat;
+	int	must_eat_times;
 }				t_args;
 
 static inline t_args	init_args(void)
@@ -36,7 +36,7 @@ static inline t_args	init_args(void)
 		.time_to_die = 0,
 		.time_to_eat = 0,
 		.time_to_sleep = 0,
-		.nbr_of_times_each_philo_must_eat = -1,
+		.must_eat_times = -1,
 	});
 }
 
@@ -48,6 +48,7 @@ typedef struct s_philo {
 	int					time_to_sleep;
 	suseconds_t			start_time;
 	bool				has_anyone_died;
+	int					eat_counter;
 }				t_philo;
 
 static inline t_philo	init_philo(t_args *args, int philo_nbr)
@@ -58,18 +59,20 @@ static inline t_philo	init_philo(t_args *args, int philo_nbr)
 		.time_to_eat = args->time_to_eat,
 		.time_to_sleep = args->time_to_sleep,
 		.has_anyone_died = false,
+		.eat_counter = 0,
 	});
 }
 
-typedef struct s_routine_args {
+/* Thread parameters */
+typedef struct s_data {
 	t_philo			*current_philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
-}				t_routine_args;
+}				t_data;
 
-static inline t_routine_args	init_routine_args(t_philo *current_philo, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
+static inline t_data	init_routine_args(t_philo *current_philo, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork)
 {
-	return ((t_routine_args){
+	return ((t_data){
 		.current_philo = current_philo,
 		.left_fork = left_fork,
 		.right_fork = right_fork,
@@ -82,7 +85,7 @@ static inline t_routine_args	init_routine_args(t_philo *current_philo, pthread_m
 void		validate_args(int argc, char **argv);
 
 /* Atoi reimplementation. Exits the program on failure if the result 
-	would overflow an integer or if it would be negative */
+	would overflow an integer, if it would be negative or 0 */
 int			long_atoi(char *str);
 
 static inline void	fill_args(t_args *args, char **argv)
@@ -92,7 +95,7 @@ static inline void	fill_args(t_args *args, char **argv)
 	args->time_to_eat = long_atoi(argv[3]);
 	args->time_to_sleep = long_atoi(argv[4]);
 	if (argv[5])
-		args->nbr_of_times_each_philo_must_eat = long_atoi(argv[5]);
+		args->must_eat_times = long_atoi(argv[5]);
 }
 
 typedef enum e_event_id {
@@ -100,11 +103,19 @@ typedef enum e_event_id {
 	EAT,
 	THINK,
 	SLEEP,
-	_FORK,
+	FORK,
 }				t_event_id;
 
-// Prints Philosophers' activity logs
-void		monitoring(suseconds_t philo_start_time, int philo_id, t_event_id event);
+
+// PHILOSOPHER ACTIONS -------------------------
+
+/* Simulates the eat philosopher action. Locks, sleeps
+time_to_eat miliseconds, unlocks left and right fork (mutex)
+and prints its respective monitoring messages */
+void	eat(t_data *args);
+
+/* Prints Philosophers' activity logs */
+void	monitoring(t_data *args, t_event_id event);
 
 // UTILS --------------------------
 

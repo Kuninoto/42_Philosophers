@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 18:53:26 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/05 21:49:04 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,54 +21,36 @@
 
 void	*routine(void *routine_args)
 {
-	t_routine_args	*casted;
+	t_data	*casted;
 
-	casted = (t_routine_args *)routine_args;
-	while (ALL_ALIVE)
-	{
-		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, THINK);	
-		pthread_mutex_lock(casted->left_fork);
-		pthread_mutex_lock(casted->right_fork);
-
-		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
-		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
-
-		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, EAT);
-		usleep(casted->current_philo->time_to_eat);
-
-		pthread_mutex_unlock(casted->left_fork);
-		pthread_mutex_unlock(casted->right_fork);
-		usleep(casted->current_philo->time_to_sleep);
-		usleep(casted->current_philo->time_to_die);
-	}
+	casted = (t_data *)routine_args;
+ 	monitoring(casted, THINK);	
+	eat(routine_args);
+	usleep(casted->current_philo->time_to_die);
 	return (NULL);
 }
 
 void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 {
-	int 			i;
-	t_routine_args	routine_args;
+	int 	i;
+	t_data	data;
 
 	i = 0;
 	while (i < args->nbr_of_philo)
 	{
-		routine_args = init_routine_args(&philos[i], &forks[i], &forks[(i + 1) % args->nbr_of_philo]);
+		data = init_routine_args(&philos[i], &forks[i], &forks[(i + 1) % args->nbr_of_philo]);
 		philos[i].start_time = get_time();
-		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&routine_args) != 0)
+		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&data) != 0)
 		{
 			free(philos);
 			on_error("Failed to create a thread");
 		}
-		i++;
-	}
-	i = 0;
-	while (i < args->nbr_of_philo)
-	{
 		if (pthread_join(philos[i++].t_id, NULL) != 0)
 		{
 			free(philos);
 			on_error("Failed to detach a thread");
 		}
+		i += 1;
 	}
 }
 
@@ -118,19 +100,15 @@ void	destroy_forks(t_args *args, pthread_mutex_t *forks)
 int	main(int argc, char **argv)
 {
 	validate_args(argc, argv);
-	t_args args;
+
+	t_args 			args;
+	t_philo 		*philos;
+	pthread_mutex_t *forks;
 	args = init_args();
 	fill_args(&args, argv);
-	
-	t_philo *philos;
-	pthread_mutex_t *forks;
-
 	philos = init_philos(&args);
 	forks = init_forks(&args);
-
 	create_threads(&args, philos, forks);
-
-
 	pthread_exit(0);
 
 	destroy_forks(&args, forks);
