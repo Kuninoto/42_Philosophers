@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2022/12/30 18:46:45 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/05 17:37:36 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,6 +17,7 @@ RM = rm -rf
 NAME = philo
 SRCS =  srcs/utils/long_atoi.c\
 		srcs/utils/on_error.c\
+		srcs/utils/get_time.c\
 		srcs/input/validate_args.c\
 		srcs/monitoring.c\
 	   	main.c
