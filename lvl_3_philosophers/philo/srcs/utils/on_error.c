@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   on_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 13:01:26 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2022/12/29 13:51:03 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:35:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdlib.h>
 
-static	int ft_strlen(char *str)
+static size_t	ft_strlen(char *str)
 {
-	int i;
+	size_t	i;
 
 	i = 0;
 	while (str[i])
-		i++;
+		i += 1;
 	return (i);
 }
 
