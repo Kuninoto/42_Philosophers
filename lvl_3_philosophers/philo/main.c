@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 17:46:51 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/05 18:53:26 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,27 +15,32 @@
 #define debug printf("debug\n")
 #define debug_args printf("%d\n", args.nbr_of_philo); printf("%d\n", args.time_to_die); printf("%d\n", args.time_to_eat); printf("%d\n", args.time_to_sleep); if (args.nbr_of_times_each_philo_must_eat) printf("%d\n", args.nbr_of_times_each_philo_must_eat);
 
+#define	ALL_ALIVE 1
+
 // t_id stands for thread identifier (id).
 
 void	*routine(void *routine_args)
 {
-	t_routine_args *casted;
+	t_routine_args	*casted;
 
 	casted = (t_routine_args *)routine_args;
+	while (ALL_ALIVE)
+	{
+		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, THINK);	
+		pthread_mutex_lock(casted->left_fork);
+		pthread_mutex_lock(casted->right_fork);
 
-	pthread_mutex_lock(casted->left_fork);
-	monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
+		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
+		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
 
-	pthread_mutex_lock(casted->right_fork);
-	monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, _FORK);
+		monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, EAT);
+		usleep(casted->current_philo->time_to_eat);
 
-	monitoring(casted->current_philo->start_time, casted->current_philo->philo_nbr, EAT);
-	usleep(casted->current_philo->time_to_eat);
-
-	pthread_mutex_unlock(casted->left_fork);
-	pthread_mutex_unlock(casted->right_fork);
- 	usleep(casted->current_philo->time_to_sleep);
-	usleep(casted->current_philo->time_to_die);
+		pthread_mutex_unlock(casted->left_fork);
+		pthread_mutex_unlock(casted->right_fork);
+		usleep(casted->current_philo->time_to_sleep);
+		usleep(casted->current_philo->time_to_die);
+	}
 	return (NULL);
 }
 
@@ -110,7 +115,7 @@ void	destroy_forks(t_args *args, pthread_mutex_t *forks)
 	free(forks);
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	validate_args(argc, argv);
 	t_args args;
