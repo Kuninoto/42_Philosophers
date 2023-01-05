@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/02 18:29:34 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/04 23:36:28 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ static inline t_philo init_philo(t_args *args) {
 
 typedef struct s_routine_args {
 	int				nbr_of_philo;
+	int				time_to_die;
+	int				time_to_eat;
 	int				time_to_sleep;
 	int				philo_num;
 	pthread_mutex_t	*left_fork;
@@ -68,6 +70,8 @@ typedef struct s_routine_args {
 static inline t_routine_args init_routine_args(t_args *args, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork, int philo_num) {
 	return ((t_routine_args){
 		.nbr_of_philo = args->nbr_of_philo,
+		.time_to_die = args->time_to_die,
+		.time_to_eat = args->time_to_eat,
 		.time_to_sleep = args->time_to_sleep,
 		.philo_num = philo_num,
 		.left_fork = left_fork,
