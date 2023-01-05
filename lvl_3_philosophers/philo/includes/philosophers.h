@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/04 23:36:28 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/05 17:44:50 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,17 +40,17 @@ static inline t_args init_args(void) {
 }
 
 typedef struct	s_philo {
+	int					philo_nbr;
 	pthread_t			t_id;
-	int					fork;
 	int					time_to_die;
 	int					time_to_eat;
 	int					time_to_sleep;
+	suseconds_t			start_time;
 }				t_philo;
 
-static inline t_philo init_philo(t_args *args) {
+static inline t_philo init_philo(t_args *args, int philo_nbr) {
 	return ((t_philo){
-		.t_id = 0,
-		.fork = 1,
+		.philo_nbr = philo_nbr,
 		.time_to_die = args->time_to_die,
 		.time_to_eat = args->time_to_eat,
 		.time_to_sleep = args->time_to_sleep,
@@ -58,22 +58,14 @@ static inline t_philo init_philo(t_args *args) {
 }
 
 typedef struct s_routine_args {
-	int				nbr_of_philo;
-	int				time_to_die;
-	int				time_to_eat;
-	int				time_to_sleep;
-	int				philo_num;
+	t_philo			*current_philo;
 	pthread_mutex_t	*left_fork;
 	pthread_mutex_t	*right_fork;
 }				t_routine_args;
 
-static inline t_routine_args init_routine_args(t_args *args, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork, int philo_num) {
+static inline t_routine_args init_routine_args(t_philo *current_philo, pthread_mutex_t *left_fork, pthread_mutex_t *right_fork) {
 	return ((t_routine_args){
-		.nbr_of_philo = args->nbr_of_philo,
-		.time_to_die = args->time_to_die,
-		.time_to_eat = args->time_to_eat,
-		.time_to_sleep = args->time_to_sleep,
-		.philo_num = philo_num,
+		.current_philo = current_philo,
 		.left_fork = left_fork,
 		.right_fork = right_fork,
 	});
@@ -103,12 +95,17 @@ typedef enum	e_event_id {
 	EAT,
 	THINK,
 	SLEEP,
+	_FORK,
 }				t_event_id;
 
 // Prints Philosophers' activity logs
-void	monitoring(t_event_id event);
+void	monitoring(suseconds_t philo_start_time, int philo_id, t_event_id event);
 
 // UTILS --------------------------
+
+/* Encapsulates the gettimeofday() procedure and 
+returns only the suseconds_t from it */
+suseconds_t	get_time(void);
 
 /* Prints Error: error_msg, followed by a newline,
 to STDERR and exits the program on failure */
