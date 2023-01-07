@@ -4,8 +4,7 @@
 
 ### Installing and running the project:
 
-###  Subject:
-[Philosophers en_subject](./extras/en.subject_philosophers.pdf)
+###  Subject: [Philosophers en_subject](./extras/en.subject_philosophers.pdf)
 
 #### Makefile Available Targets:  
 
