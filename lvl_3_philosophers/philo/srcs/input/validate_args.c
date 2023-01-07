@@ -24,7 +24,7 @@ static void	is_all_digits(char **argv)
 		while (argv[i][j])
 		{
 			if (isdigit_or_signal(argv[i][j]) == false)
-				on_error("Not all arguments are numbers");
+				panic("Not all arguments are numbers");
 			j += 1;
 		}
 		i += 1;
@@ -34,6 +34,6 @@ static void	is_all_digits(char **argv)
 void	validate_args(int argc, char **argv)
 {
 	if (argc != 5 && argc != 6)
-		on_error("Invalid number of arguments");
+		panic("Invalid number of arguments");
 	is_all_digits(argv);
 }

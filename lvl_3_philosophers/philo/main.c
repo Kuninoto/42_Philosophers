@@ -43,12 +43,12 @@ void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&data) != 0)
 		{
 			free(philos);
-			on_error("Failed to create a thread");
+			panic("Failed to create a thread");
 		}
 		if (pthread_join(philos[i++].t_id, NULL) != 0)
 		{
 			free(philos);
-			on_error("Failed to detach a thread");
+			panic("Failed to detach a thread");
 		}
 		i += 1;
 	}
@@ -61,7 +61,7 @@ t_philo	*init_philos(t_args *args)
 	
 	philos = malloc(args->nbr_of_philo * sizeof(t_philo));
 	if (!philos)
-		on_error("Failed to allocate memory for the philosophers array");
+		panic("Failed to allocate memory for the philosophers array");
 	i = 0;
 	while (i < args->nbr_of_philo)
 	{
@@ -81,7 +81,7 @@ pthread_mutex_t	*init_forks(t_args *args)
 	while (i < args->nbr_of_philo)
 	{
 		if (pthread_mutex_init(&forks[i], NULL) != 0)
-        	on_error("Mutex init has failed");
+        		panic("Mutex init has failed");
 		i += 1;
 	}
 	return (forks);

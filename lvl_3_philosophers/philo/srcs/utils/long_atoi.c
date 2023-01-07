@@ -23,7 +23,7 @@ int	long_atoi(char *str)
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			on_error("Arguments cannot be negative");
+			panic("Arguments cannot be negative");
 		i += 1;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -32,8 +32,8 @@ int	long_atoi(char *str)
 		i += 1;
 	}
 	if (res > INT_MAX || res <= INT_MIN)
-		on_error("One of the arguments overflows integer type");
+		panic("One of the arguments overflows integer type");
 	else if (res == 0)
-		on_error("Arguments must be bigger than 0");
+		panic("Arguments must be bigger than 0");
 	return ((int)res);
 }
