@@ -23,7 +23,7 @@ static size_t	ft_strlen(char *str)
 	return (i);
 }
 
-void	on_error(char *error_msg)
+void	panic(char *error_msg)
 {
 	write(STDERR_FILENO, "Error: ", 7);
 	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
