@@ -6,33 +6,33 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 19:54:46 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 21:07:47 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/10 20:15:32 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-static void	pick_forks(t_data *args)
+static void	pick_forks(t_philo *philo)
 {
-	pthread_mutex_lock(args->left_fork);
-	pthread_mutex_lock(args->right_fork);
-	monitoring(args, FORK);
-	monitoring(args, FORK);
+	pthread_mutex_lock(philo->left_fork);
+	pthread_mutex_lock(philo->right_fork);
+	monitoring(philo, FORK);
+	monitoring(philo, FORK);
 }
 
-static void	drop_forks(t_data *args)
+static void	drop_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(args->left_fork);
-	pthread_mutex_unlock(args->right_fork);
-	monitoring(args, SLEEP);
-	usleep(args->current_philo->time_to_sleep);
+	pthread_mutex_unlock(philo->left_fork);
+	pthread_mutex_unlock(philo->right_fork);
 }
 
-void	eat(t_data *args)
+void	eat(t_philo *philo)
 {
-	pick_forks(args);
-	monitoring(args, EAT);
-	usleep(args->current_philo->time_to_eat);
-	drop_forks(args);
-	args->current_philo->eat_counter += 1;
+	pick_forks(philo);
+	philo->can_die = false;
+	monitoring(philo, EAT);
+	usleep(philo->args->time_to_eat * to_microsec);
+	philo->last_meal_time = get_time();
+	drop_forks(philo);
+	philo->eaten_meals += 1;
 }
