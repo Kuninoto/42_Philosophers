@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 21:14:48 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/10 19:46:39 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,13 @@
 #define SLEEP_EMOJI "😴"
 #define FORK_EMOJI "🍴"
 
-void	monitoring(t_data *args, t_event_id event)
+void	monitoring(t_philo *philo, t_event_id event)
 {
-	size_t	timestamp;
-	int		philo_nbr;
+	suseconds_t	timestamp;
 
-	timestamp = get_time() - args->current_philo->start_time;
-	philo_nbr = args->current_philo->philo_nbr;
-	printf("%02ld %d ", timestamp, philo_nbr);
+	timestamp = get_time() - philo->start_time;
+	pthread_mutex_lock(&philo->args->monitoring_mutex);
+	printf("%ld %d ", timestamp, philo->philo_nbr);
 	if (event == FORK)
 		printf("has taken a fork %s\n", FORK_EMOJI);
 	else if (event == EAT)
@@ -36,4 +35,5 @@ void	monitoring(t_data *args, t_event_id event)
 		printf("is thinking %s\n", THINK_EMOJI);
 	else if (event == DEAD)
 		printf("died %s\n", DEAD_EMOJI);
+	pthread_mutex_unlock(&philo->args->monitoring_mutex);
 }
