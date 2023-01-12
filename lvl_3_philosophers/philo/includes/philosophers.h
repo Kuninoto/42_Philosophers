@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/10 20:10:24 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/12 18:53:08 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_philo {
 	int					eaten_meals;
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
-	int					last_meal_time;
+	suseconds_t			last_meal_time;
 	pthread_t			t_id;
 	suseconds_t			start_time;
 	bool				can_die;
