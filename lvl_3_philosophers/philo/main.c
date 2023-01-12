@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/10 20:16:39 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/12 19:56:11 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,35 +33,30 @@ void	*routine(void *routine_args)
 // Thread that watches the philosophers activity
 void	*supervisor(void *philos)
 {
-	int		satisfied_philos;
 	t_philo	*casted;
+	int		satisfied_philos;
 	int		i;
 
-	satisfied_philos = 0;
 	casted = (t_philo *)philos;
-	while (true)
+	satisfied_philos = 0;
+	while (satisfied_philos != casted->args->nbr_of_philo)
 	{
 		i = 0;
 		while (i < casted->args->nbr_of_philo)
 		{
-			if ((get_time() - casted->last_meal_time) 
-				>= casted->args->time_to_die)
+			if (((get_time() - casted[i].last_meal_time) 
+				>= casted->args->time_to_die) && casted[i].can_die)
 			{
 				monitoring(casted, DEAD);
 				return (NULL);
 			}
-			if (casted->eaten_meals == casted->args->must_eat_times)
+			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
-			usleep(1 * to_microsec);
 			i += 1;
-			if (satisfied_philos == casted->args->nbr_of_philo)
-			{
-				printf("Every Philosopher had %d meals!\n", satisfied_philos);
-				break;
-			}
 		}
 	}
-		
+	printf("Every Philosopher had %d meals!\n", satisfied_philos);
+	return (NULL);	
 }
 
 // Creates and makes main thread join supervisor thread
@@ -93,6 +88,7 @@ void	create_threads(t_args *args, t_philo *philos)
 		}
 		i += 1;
 	}
+//	printf("SUPERVISOR LAST MEAL TIME 1= %ld\n", ((t_philo *)&philos)[0].last_meal_time);
 	create_supervisor((void *)philos);
 }
 
