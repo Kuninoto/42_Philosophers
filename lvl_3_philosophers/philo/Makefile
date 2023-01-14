@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/14 16:42:14 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/14 17:08:55 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,8 +21,10 @@ SRCS =  srcs/utils/long_atoi.c\
 		srcs/utils/fork_utils.c\
 		srcs/input/validate_args.c\
 		srcs/input/init_fill_args.c\
+		srcs/philos/init_philos.c\
+		srcs/philos/routine.c\
+		srcs/create_threads.c\
 		srcs/monitoring.c\
-		srcs/actions.c\
 	   	main.c
 
 OBJS = $(SRCS:.c=.o)
