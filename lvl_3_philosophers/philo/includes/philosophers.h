@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/12 18:53:08 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:51:29 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <pthread.h> // POSIX thread API
 # include <stdbool.h> // boolean data type
 
-#define to_microsec 1000
+# define TO_MICROSEC 1000
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -58,54 +58,39 @@ typedef enum e_event_id {
 // Init forks (mutexes)
 pthread_mutex_t	*init_forks(t_args *args);
 
-// Destroys all forks (mutexes)
-void	destroy_forks(t_args *args, pthread_mutex_t *forks);
+// Destroys all forks & monitoring_mutex
+void			destroy_mutexes(t_args *args, pthread_mutex_t *forks, t_philo *philos);
 
 // INPUT ------------------------------------
 
 /* Checks if all arguments provided are digits */
-void		validate_args(int argc, char **argv);
+void			validate_args(int argc, char **argv);
 
 /* Atoi reimplementation. Exits the program on failure if the result 
 	would overflow an integer, if it would be negative or 0 */
-int			long_atoi(char *str);
+int				long_atoi(char *str);
 
-static inline t_args	init_fill_args(char **argv)
-{
-	t_args	args;
-
-	args.nbr_of_philo = long_atoi(argv[1]);
-	args.time_to_die = long_atoi(argv[2]);
-	args.time_to_eat = long_atoi(argv[3]);
-	args.time_to_sleep = long_atoi(argv[4]);
-	if (argv[5])
-		args.must_eat_times = long_atoi(argv[5]);
-	else
-		args.must_eat_times = -1;
-	args.is_anyone_dead = false;
-	pthread_mutex_init(&args.monitoring_mutex, NULL);
-	return (args);
-}
+t_args	init_fill_args(char **argv);
 
 // PHILOSOPHER ACTIONS -------------------------
 
-/* Simulates the eat philosopher action. Locks, sleeps
+/* Encapsulates the eat philosopher action. Locks, sleeps
 time_to_eat miliseconds, unlocks left and right fork (mutex)
 and prints its respective monitoring messages */
-void	eat(t_philo *philo);
+void			eat(t_philo *philo);
 
 /* Prints Philosophers' activity logs */
-void	monitoring(t_philo *philo, t_event_id event);
+void			monitoring(t_philo *philo, t_event_id event);
 
 // UTILS --------------------------
 
 /* Encapsulates the gettimeofday() procedure and 
 returns only the suseconds_t from it */
-suseconds_t	get_time(void);
+suseconds_t		get_time(void);
 
 /* Prints Error: <error_msg>\n to STDERR 
 and exits the program on failure */
-void	panic(char *error_msg);
+void			panic(char *error_msg);
 
 /* Checks if c is a character that represents a digit or a signal */
 static inline bool	isdigit_or_signal(char c)
@@ -115,6 +100,6 @@ static inline bool	isdigit_or_signal(char c)
 		return (true);
 	else
 		return (false);
-};
+}
 
 #endif

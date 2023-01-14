@@ -17,7 +17,7 @@ https://www.geeksforgeeks.org/multithreading-c-2/
 https://www.youtube.com/watch?v=FY9livorrJI  
 https://www.youtube.com/watch?v=xoXzp4B8aQk  
 
-Threads vs. Processes:
+Threads vs. Processes:  
 https://www.geeksforgeeks.org/difference-between-process-and-thread/  
 https://www.youtube.com/watch?v=IKG1P4rgm54  
 
@@ -38,8 +38,6 @@ https://www.geeksforgeeks.org/mutex-vs-semaphore/
 
 ## Disclaimer
 > At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the [Norm](./extras/en_norm.pdf), the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
-
-## Useful links
 
 ---
 Made by Nuno Carvalho (Kuninoto) | nnuno-ca@student.42porto.com  

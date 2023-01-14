@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   actions.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/05 19:54:46 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/12 18:52:12 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:33:14 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	eat(t_philo *philo)
 	pick_forks(philo);
 	philo->can_die = false;
 	monitoring(philo, EAT);
-	usleep(philo->args->time_to_eat * to_microsec);
+	usleep(philo->args->time_to_eat * TO_MICROSEC);
 	philo->last_meal_time = get_time();
 	drop_forks(philo);
 	philo->eaten_meals += 1;
