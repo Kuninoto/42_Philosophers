@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 16:51:29 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:12:24 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,32 @@ typedef enum e_event_id {
 pthread_mutex_t	*init_forks(t_args *args);
 
 // Destroys all forks & monitoring_mutex
-void			destroy_mutexes(t_args *args, pthread_mutex_t *forks, t_philo *philos);
+void			destroy_mutexes(t_args *args, pthread_mutex_t *forks,
+					t_philo *philos);
 
 // INPUT ------------------------------------
 
-/* Checks if all arguments provided are digits */
+/* Checks if argc == 5 || 6 and if 
+all arguments provided are digits */
 void			validate_args(int argc, char **argv);
 
 /* Atoi reimplementation. Exits the program on failure if the result 
-	would overflow an integer, if it would be negative or 0 */
+would overflow an integer, if it would be negative or 0 */
 int				long_atoi(char *str);
 
-t_args	init_fill_args(char **argv);
+/* 	Initializes and fills a t_args structure */
+t_args			init_fill_args(char **argv);
 
-// PHILOSOPHER ACTIONS -------------------------
+// PHILOSOPHERS -------------------------
 
-/* Encapsulates the eat philosopher action. Locks, sleeps
-time_to_eat miliseconds, unlocks left and right fork (mutex)
-and prints its respective monitoring messages */
-void			eat(t_philo *philo);
+/* Initializes philosophers array */
+t_philo			*init_philos(t_args *args, pthread_mutex_t *forks_array);
+
+/* Creates Philosophers and supervisor threads */
+void			create_threads(t_args *args, t_philo *philos);
+
+/* Philosophers' routine: eat, sleep, think */
+void			*routine(void *routine_args);
 
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
