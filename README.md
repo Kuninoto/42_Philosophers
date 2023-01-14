@@ -1,6 +1,6 @@
 # Philosophers (42Porto - 42Cursus) <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Linux" alt="Linux Logo" width="50" height="60" align="right" />&nbsp; <img src="https://github.com/devicons/devicon/blob/master/icons/c/c-original.svg" title="C" alt="C Logo" width="55" height="55" align="right" />&nbsp;  
 
-## Grade: ?/100
+## Grade: 125/100
 
 ### Installing and running the project:
 
@@ -28,13 +28,25 @@ https://www.geeksforgeeks.org/mutex-lock-for-linux-thread-synchronization/
 Project Guide:  
 https://github.com/TommyJD93/Philosophers  
 
-Semaphores:  
+General semaphore understanding:  
 https://www.geeksforgeeks.org/semaphores-in-process-synchronization/  
+https://www.geeksforgeeks.org/use-posix-semaphores-c/  
+https://www.youtube.com/watch?v=YSn8_XdGH7c  
+https://www.youtube.com/watch?v=XDIOC2EY5JE  
+https://www.youtube.com/watch?v=ukM_zzrIeXs  
 
 Mutex vs. Semaphores:  
 https://www.geeksforgeeks.org/mutex-vs-semaphore/  
+https://www.youtube.com/watch?v=8wcuLCvMmF8  
 
+ **| Mutex vs. Semaphores Cheat Sheet: | **                                                               
+:--------------------------------------------------------------------------------------------------------:
+ |  Behaves like a lock | Behaves like a limited inventory |                                          
+ |  pthread_mutex_lock() | sem_wait(), decrements the number of available things, if sem == 0, waits. |   
+ |  pthread_mutex_unlock() | sem_post(), increments back the number of available things |                 
 
+Dining Philosophers problem using Semaphores:    
+https://www.geeksforgeeks.org/dining-philosopher-problem-using-semaphores/?ref=lbp    
 
 ## Disclaimer
 > At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the [Norm](./extras/en_norm.pdf), the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
