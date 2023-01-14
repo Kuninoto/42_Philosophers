@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 20:14:48 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 21:43:06 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,10 @@ void	*routine(void *philo)
 	while (true)
 	{
 		eat(casted);
+		casted->can_die = true;
 		monitoring(casted, SLEEP);
 		usleep(casted->args->time_to_sleep * TO_MICROSEC);
 		monitoring(casted, THINK);
-		casted->can_die = true;
 	}
 	return (NULL);
 }

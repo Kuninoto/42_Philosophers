@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 19:29:32 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:29:47 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,7 @@ t_args	init_fill_args(char **argv)
 	else
 		args.must_eat_times = -1;
 	sem_init(&args.forks, 0, args.nbr_of_philo);
+	args.is_anyone_dead = false;
+	sem_init(&args.monitoring_sem, 0, 1);
 	return (args);
 }

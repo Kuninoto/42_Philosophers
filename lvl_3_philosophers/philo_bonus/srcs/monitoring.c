@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 19:27:31 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:29:34 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	monitoring(t_philo *philo, t_event_id event)
 {
 	suseconds_t	timestamp;
 
+	sem_wait(&philo->args->monitoring_sem);
 	timestamp = get_time() - philo->start_time;
 	printf("%ld %d ", timestamp, philo->philo_nbr);
 	if (event == FORK)
@@ -36,4 +37,5 @@ void	monitoring(t_philo *philo, t_event_id event)
 		printf("is thinking %s\n", THINK_EMOJI);
 	else if (event == DEAD)
 		printf("died %s\n", DEAD_EMOJI);
+	sem_post(&philo->args->monitoring_sem);
 }

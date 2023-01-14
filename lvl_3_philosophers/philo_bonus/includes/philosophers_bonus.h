@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 20:11:42 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:58:44 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,10 @@
 # include <fcntl.h> // For O_* constants
 # include <sys/stat.h> // For mode constants
 # include <semaphore.h> // POSIX semaphore API, sem_* functions
-
+# include <signal.h> // kill()
 
 # define TO_MICROSEC 1000
+# define ALL_ALIVE 1
 # define FORK_ERROR "fork failed()"
 
 typedef struct s_args {
@@ -37,6 +38,8 @@ typedef struct s_args {
 	int					time_to_sleep;
 	int					must_eat_times;
 	sem_t				forks;
+	sem_t				monitoring_sem;
+	bool				is_anyone_dead;
 }				t_args;
 
 typedef struct s_philo {
@@ -80,7 +83,7 @@ t_philo			*init_philos(t_args *args);
 void			create_processes(t_args *args, t_philo *philos);
 
 /* Philosophers' routine: eat, sleep, think */
-void			*routine(t_philo *philo);
+void			routine(t_philo *philo);
 
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
