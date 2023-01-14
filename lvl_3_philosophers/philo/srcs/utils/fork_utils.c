@@ -20,24 +20,18 @@ pthread_mutex_t	*init_forks(t_args *args)
 	forks = malloc(args->nbr_of_philo * sizeof(pthread_mutex_t));
 	i = 0;
 	while (i < args->nbr_of_philo)
-	{
-		if (pthread_mutex_init(&forks[i], NULL) != 0)
+		if (pthread_mutex_init(&forks[i++], NULL) != 0)
 			panic("Mutex init has failed");
-		i += 1;
-	}
 	return (forks);
 }
 
-void	destroy_mutexes(t_args *args, pthread_mutex_t *forks, t_philo *philos)
+void	destroy_mutexes(t_args *args, pthread_mutex_t *forks)
 {
 	int	i;
 
 	i = 0;
 	while (i < args->nbr_of_philo)
-	{
-		pthread_mutex_destroy(&forks[i]);
-		pthread_mutex_destroy(&philos[i].args->monitoring_mutex);
-		i += 1;
-	}
+		pthread_mutex_destroy(&forks[i++]);
+	pthread_mutex_destroy(&args->monitoring_mutex);
 	free(forks);
 }

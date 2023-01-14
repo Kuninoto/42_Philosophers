@@ -1,27 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 20:13:56 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/14 20:11:42 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHERS_H
-# define PHILOSOPHERS_H
+#ifndef PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
 # include <memory.h> // memset()
 # include <stdio.h> // printf()
 # include <stdlib.h> // malloc(), free()
 # include <unistd.h> // write(), usleep()
+# include <sys/types.h> // fork()
 # include <sys/time.h> // gettimeofday()
-# include <pthread.h> // POSIX thread API
+# include <sys/wait.h> // waitpid()
+# include <pthread.h> // POSIX thread API, pthread_* functions()
 # include <stdbool.h> // boolean data type
+# include <fcntl.h> // For O_* constants
+# include <sys/stat.h> // For mode constants
+# include <semaphore.h> // POSIX semaphore API, sem_* functions
+
 
 # define TO_MICROSEC 1000
+# define FORK_ERROR "fork failed()"
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -29,16 +36,14 @@ typedef struct s_args {
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_times;
-	pthread_mutex_t		monitoring_mutex;
+	sem_t				forks;
 }				t_args;
 
 typedef struct s_philo {
 	int					philo_nbr;
+	pid_t				pid;
 	int					eaten_meals;
-	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*right_fork;
 	suseconds_t			last_meal_time;
-	pthread_t			t_id;
 	suseconds_t			start_time;
 	bool				can_die;
 	t_args				*args;
@@ -52,14 +57,6 @@ typedef enum e_event_id {
 	FORK,
 	DROP,
 }				t_event_id;
-
-// FORK UTILS ------------------------------
-
-// Init forks (mutexes)
-pthread_mutex_t	*init_forks(t_args *args);
-
-// Destroys all forks & monitoring_mutex
-void			destroy_mutexes(t_args *args, pthread_mutex_t *forks);
 
 // INPUT ------------------------------------
 
@@ -77,13 +74,13 @@ t_args			init_fill_args(char **argv);
 // PHILOSOPHERS -------------------------
 
 /* Initializes philosophers array */
-t_philo			*init_philos(t_args *args, pthread_mutex_t *forks_array);
+t_philo			*init_philos(t_args *args);
 
-/* Creates Philosophers and supervisor threads */
-void			create_threads(t_args *args, t_philo *philos);
+/* Creates Philosophers and supervisor processes */
+void			create_processes(t_args *args, t_philo *philos);
 
 /* Philosophers' routine: eat, sleep, think */
-void			*routine(void *philo);
+void			*routine(t_philo *philo);
 
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
@@ -97,6 +94,9 @@ suseconds_t		get_time(void);
 /* Prints Error: <error_msg>\n to STDERR 
 and exits the program on failure */
 void			panic(char *error_msg);
+
+/* Frees args and philosophers array */
+void	destroy(t_args *args, t_philo *philo_array);
 
 /* Checks if c is a character that represents a digit or a signal */
 static inline bool	isdigit_or_signal(char c)
