@@ -6,11 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 19:29:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 19:29:32 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "../../includes/philosophers_bonus.h"
 
 t_args	init_fill_args(char **argv)
 {
@@ -24,6 +24,6 @@ t_args	init_fill_args(char **argv)
 		args.must_eat_times = long_atoi(argv[5]);
 	else
 		args.must_eat_times = -1;
-	pthread_mutex_init(&args.monitoring_mutex, NULL);
+	sem_init(&args.forks, 0, args.nbr_of_philo);
 	return (args);
 }
