@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/12 19:56:11 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 16:53:53 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	*routine(void *routine_args)
 	{
 		eat(routine_args);
 		monitoring(casted, SLEEP);
-		usleep(casted->args->time_to_sleep * to_microsec);
- 		monitoring(casted, THINK);
+		usleep(casted->args->time_to_sleep * TO_MICROSEC);
+		monitoring(casted, THINK);
 		casted->can_die = true;
 	}
 	return (NULL);
@@ -44,10 +44,11 @@ void	*supervisor(void *philos)
 		i = 0;
 		while (i < casted->args->nbr_of_philo)
 		{
-			if (((get_time() - casted[i].last_meal_time) 
-				>= casted->args->time_to_die) && casted[i].can_die)
+			if (((get_time() - casted[i].last_meal_time)
+					>= casted->args->time_to_die && casted[i].can_die))
 			{
 				monitoring(casted, DEAD);
+				pthread_mutex_unlock(&casted[i].args->monitoring_mutex);
 				return (NULL);
 			}
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
@@ -55,8 +56,8 @@ void	*supervisor(void *philos)
 			i += 1;
 		}
 	}
-	printf("Every Philosopher had %d meals!\n", satisfied_philos);
-	return (NULL);	
+	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
+	return (NULL);
 }
 
 // Creates and makes main thread join supervisor thread
@@ -70,13 +71,14 @@ void	create_supervisor(void *philos)
 
 void	create_threads(t_args *args, t_philo *philos)
 {
-	int 	i;
+	int	i;
 
 	i = 0;
 	while (i < args->nbr_of_philo)
 	{
 		philos[i].start_time = get_time();
-		if (pthread_create(&philos[i].t_id, NULL, routine, (void *)&philos[i]) != 0)
+		if (pthread_create(&philos[i].t_id, NULL,
+				routine, (void *)&philos[i]) != 0)
 		{
 			free(philos);
 			panic("Failed to create a thread");
@@ -88,15 +90,14 @@ void	create_threads(t_args *args, t_philo *philos)
 		}
 		i += 1;
 	}
-//	printf("SUPERVISOR LAST MEAL TIME 1= %ld\n", ((t_philo *)&philos)[0].last_meal_time);
 	create_supervisor((void *)philos);
 }
 
 t_philo	*init_philos(t_args *args, pthread_mutex_t *forks_array)
 {
-	t_philo *philos;
+	t_philo	*philos;
 	int		i;
-	
+
 	philos = malloc(args->nbr_of_philo * sizeof(t_philo));
 	if (!philos)
 		panic("Failed to allocate memory for the philosophers array");
@@ -104,12 +105,12 @@ t_philo	*init_philos(t_args *args, pthread_mutex_t *forks_array)
 	while (i < args->nbr_of_philo)
 	{
 		philos[i].philo_nbr = i + 1;
-		philos[i].eaten_meals = 0,
+		philos[i].eaten_meals = 0;
 		philos[i].left_fork = &forks_array[i];
 		philos[i].right_fork = &forks_array[(i + 1) % args->nbr_of_philo];
-		philos[i].last_meal_time = get_time(),
-		philos[i].can_die = true,
-		philos[i].args = args,
+		philos[i].last_meal_time = get_time();
+		philos[i].can_die = true;
+		philos[i].args = args;
 		i += 1;
 	}
 	return (philos);
@@ -117,16 +118,16 @@ t_philo	*init_philos(t_args *args, pthread_mutex_t *forks_array)
 
 int	main(int argc, char **argv)
 {
-	t_args 			args;
-	pthread_mutex_t *forks;
-	t_philo 		*philos;
+	t_args			args;
+	pthread_mutex_t	*forks;
+	t_philo			*philos;
 
 	validate_args(argc, argv);
 	args = init_fill_args(argv);
 	forks = init_forks(&args);
 	philos = init_philos(&args, forks);
 	create_threads(&args, philos);
-	destroy_forks(&args, forks);
-	free(philos);	
+	destroy_mutexes(&args, forks, philos);
+	free(philos);
 	return (EXIT_SUCCESS);
 }
