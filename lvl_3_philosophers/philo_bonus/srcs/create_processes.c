@@ -1,41 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   create_threads.c                                   :+:      :+:    :+:   */
+/*   create_processes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 19:58:33 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 22:49:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_bonus.h"
 
-/* Process that watches the philosophers activity */
-void	*supervisor(t_philo *philos)
+void	end_processes(t_philo *philos)
 {
+	int	i;
+
+	i = 0;
+	while (i < philos->args->nbr_of_philo)
+		kill(philos[i++].pid, SIGKILL);
+}
+
+/* Process that watches the philosophers activity */
+void	*supervisor(void *philos)
+{
+	t_philo	*casted;
 	int		satisfied_philos;
 	int		i;
 
+	casted = (t_philo *)philos;
 	satisfied_philos = 0;
-	while (satisfied_philos != philos->args->nbr_of_philo)
+	while (satisfied_philos != casted->args->nbr_of_philo)
 	{
 		i = 0;
-		while (i < philos->args->nbr_of_philo)
+		while (i < casted->args->nbr_of_philo)
 		{
-			if (((get_time() - philos[i].last_meal_time)
-					>= philos->args->time_to_die && philos[i].can_die))
+			if (((get_time() - casted[i].last_meal_time)
+					>= casted->args->time_to_die && casted[i].can_die))
 			{
-				monitoring(philos, DEAD);
+				end_processes((t_philo *)philos);
+				monitoring(casted, DEAD);
 				return (NULL);
 			}
-			if (philos[i].eaten_meals == philos->args->must_eat_times)
+			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
 		}
 	}
-	printf("Every Philosopher had %d meals!\n", philos->args->must_eat_times);
+	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
 	return (NULL);
 }
 
@@ -73,9 +85,11 @@ void	create_processes(t_args *args, t_philo *philos)
 			destroy(args, philos);
 			panic(FORK_ERROR);
 		}
-		// Child process
 		if (philos[i].pid == 0)
+		{
 			routine(&philos[i]);
+			exit(EXIT_SUCCESS);
+		}
 		i += 1;
 	}
 	create_supervisor(args, philos);
