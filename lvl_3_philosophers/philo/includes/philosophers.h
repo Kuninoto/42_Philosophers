@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 17:12:24 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/14 17:26:20 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ typedef enum e_event_id {
 	THINK,
 	SLEEP,
 	FORK,
+	DROP,
 }				t_event_id;
 
 // FORK UTILS ------------------------------
