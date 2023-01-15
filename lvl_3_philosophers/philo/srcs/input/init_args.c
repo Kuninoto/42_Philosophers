@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_fill_args.c                                   :+:      :+:    :+:   */
+/*   init_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:35:38 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 20:15:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ t_args	init_args(char **argv)
 		printf(MUST_EAT_0);
 		exit(EXIT_SUCCESS);
 	}
-	if (pthread_mutex_init(&args.monitoring_mutex, NULL) == 0)
-		panic(MUTEX_INIT_ERR);
+	pthread_mutex_init(&args.monitoring_mutex, NULL);
+	args.someone_died = false;
 	return (args);
 }

@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:19:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 21:26:22 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	*supervisor(void *philos)
 		i = 0;
 		while (i < casted->args->nbr_of_philo)
 		{
-			if (((get_time() - casted[i].last_meal_time)
-					>= casted->args->time_to_die && casted[i].can_die))
+			if (starved(&casted[i]) && casted[i].can_die)
 			{
+				casted->args->someone_died = true;
 				monitoring(casted, DEAD);
 				pthread_mutex_unlock(&casted[i].args->monitoring_mutex);
 				return (NULL);

@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:36:10 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 22:17:44 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void			create_processes(t_args *args, t_philo *philos);
 /* Philosophers' routine: eat, sleep, think */
 void			routine(t_philo *philo);
 
+
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
 
@@ -100,23 +101,40 @@ suseconds_t		get_time(void);
 and exits the program on failure */
 void			panic(char *error_msg);
 
+/* Checks if a philosopher starved 
+(current time - last time philosopher had a meal)
+and checks if that is bigger than the time a philosopher
+can pass without eating */
+static inline bool	starved(t_philo *philo)
+{
+	return (((get_time() - philo->last_meal_time)
+					>= philo->args->time_to_die));
+}
+
 /* Frees args and philosophers array */
 void			destroy(t_args *args, t_philo *philo_array);
 
+/* Unlinks "/forks" and "/print" named semaphores */
 static inline void	unlink_sems(void)
 {
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_PRINT);
 }
 
-/* Checks if c is a character that represents a digit or a signal */
 static inline bool	isdigit_or_signal(char c)
 {
 	if ((c >= '0' && c <= '9')
 		|| (c == '+' || c == '-'))
 		return (true);
-	else
-		return (false);
+	return (false);
+}
+
+static inline bool	is_spaces(char c)
+{
+	if (c == '\t' || c == '\n' || c == '\v' ||
+			c == '\f' || c == '\r' || c == ' ')
+		return (true);
+	return (false);
 }
 
 #endif
