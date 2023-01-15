@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 21:43:06 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 14:44:12 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static void	drop_forks(t_philo *philo)
 Locks left and right fork, sleeps time_to_eat miliseconds,
 unlocks left and right fork (mutexes) and prints its respective 
 monitoring messages */
-void	eat(t_philo *philo)
+static void	eat(t_philo *philo)
 {
 	pick_forks(philo);
 	philo->can_die = false;
@@ -41,6 +41,13 @@ void	eat(t_philo *philo)
 	philo->last_meal_time = get_time();
 	drop_forks(philo);
 	philo->eaten_meals += 1;
+	philo->can_die = true;
+}
+
+static void	_sleep(t_philo *philo)
+{
+	monitoring(philo, SLEEP);
+	usleep(philo->args->time_to_sleep * TO_MICROSEC);
 }
 
 void	*routine(void *philo)
@@ -51,9 +58,7 @@ void	*routine(void *philo)
 	while (true)
 	{
 		eat(casted);
-		casted->can_die = true;
-		monitoring(casted, SLEEP);
-		usleep(casted->args->time_to_sleep * TO_MICROSEC);
+		_sleep(casted);
 		monitoring(casted, THINK);
 	}
 	return (NULL);

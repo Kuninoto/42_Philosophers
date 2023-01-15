@@ -6,13 +6,15 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 22:49:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:34:07 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_bonus.h"
 
-void	end_processes(t_philo *philos)
+#define FORK_ERROR "fork failed()"
+
+static void	end_processes(t_philo *philos)
 {
 	int	i;
 
@@ -22,7 +24,7 @@ void	end_processes(t_philo *philos)
 }
 
 /* Process that watches the philosophers activity */
-void	*supervisor(void *philos)
+static void	*supervisor(void *philos)
 {
 	t_philo	*casted;
 	int		satisfied_philos;
@@ -38,13 +40,14 @@ void	*supervisor(void *philos)
 			if (((get_time() - casted[i].last_meal_time)
 					>= casted->args->time_to_die && casted[i].can_die))
 			{
-				end_processes((t_philo *)philos);
+				end_processes(casted);
 				monitoring(casted, DEAD);
 				return (NULL);
 			}
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
+			usleep(MICROSEC);
 		}
 	}
 	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
@@ -52,7 +55,7 @@ void	*supervisor(void *philos)
 }
 
 /* Creates supervisor process and makes main process wait for its pid */
-void	create_supervisor(t_args *args, t_philo *philos)
+static void	create_supervisor(t_args *args, t_philo *philos)
 {
 	pid_t		supervisor_pid;
 
@@ -86,10 +89,7 @@ void	create_processes(t_args *args, t_philo *philos)
 			panic(FORK_ERROR);
 		}
 		if (philos[i].pid == 0)
-		{
 			routine(&philos[i]);
-			exit(EXIT_SUCCESS);
-		}
 		i += 1;
 	}
 	create_supervisor(args, philos);

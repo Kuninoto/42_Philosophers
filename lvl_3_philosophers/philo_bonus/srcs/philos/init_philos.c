@@ -6,11 +6,13 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:59:41 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 18:28:55 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 15:43:19 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers_bonus.h"
+
+#define PHILO_MALLOC_ERR "Failed to allocate memory for the philosophers array"
 
 t_philo	*init_philos(t_args *args)
 {
@@ -19,7 +21,7 @@ t_philo	*init_philos(t_args *args)
 
 	philos = malloc(args->nbr_of_philo * sizeof(t_philo));
 	if (!philos)
-		panic("Failed to allocate memory for the philosophers array");
+		panic(PHILO_MALLOC_ERR);
 	i = 0;
 	while (i < args->nbr_of_philo)
 	{
