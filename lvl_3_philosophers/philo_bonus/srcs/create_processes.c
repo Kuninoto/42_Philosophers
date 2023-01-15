@@ -6,13 +6,13 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 18:13:50 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 22:02:26 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_bonus.h"
 
-#define FORK_ERROR "fork failed()"
+#define FORK_ERR "failed to fork()"
 
 static void	end_processes(t_philo *philos)
 {
@@ -20,11 +20,14 @@ static void	end_processes(t_philo *philos)
 
 	i = 0;
 	while (i < philos->args->nbr_of_philo)
-		kill(philos[i++].pid, SIGKILL);
+	{
+		kill(philos[i].pid, SIGKILL);
+		i += 1;
+	}
 }
 
 /* Process that watches the philosophers activity */
-static void	*supervisor(void *philos)
+static void	supervisor(void *philos)
 {
 	t_philo	*casted;
 	int		satisfied_philos;
@@ -37,20 +40,22 @@ static void	*supervisor(void *philos)
 		i = 0;
 		while (i < casted->args->nbr_of_philo)
 		{
-			if (((get_time() - casted[i].last_meal_time)
-					>= casted->args->time_to_die && casted[i].can_die))
+			if (starved(&casted[i]) && casted[i].can_die)
 			{
 				end_processes(casted);
 				monitoring(casted, DEAD);
-				return (NULL);
+				exit(EXIT_SUCCESS);
 			}
+			//printf("eaten meals = %d\n", casted[i].eaten_meals);
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
 		}
+		//printf("Satisfied_philos = %d\n", satisfied_philos);
 	}
+	end_processes(casted);
 	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
-	return (NULL);
+	exit(EXIT_SUCCESS);
 }
 
 /* Creates supervisor process and makes main process wait for its pid */
@@ -62,13 +67,10 @@ static void	create_supervisor(t_args *args, t_philo *philos)
 	if (supervisor_pid == -1)
 	{
 		destroy(args, philos);
-		panic(FORK_ERROR);
+		panic(FORK_ERR);
 	}
 	if (supervisor_pid == 0)
-	{
 		supervisor(philos);
-		exit(EXIT_SUCCESS);
-	}
 	else
 		waitpid(supervisor_pid, NULL, 0);
 }
@@ -85,7 +87,7 @@ void	create_processes(t_args *args, t_philo *philos)
 		if (philos[i].pid == -1)
 		{
 			destroy(args, philos);
-			panic(FORK_ERROR);
+			panic(FORK_ERR);
 		}
 		if (philos[i].pid == 0)
 			routine(&philos[i]);

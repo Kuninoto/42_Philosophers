@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:14:30 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 21:01:45 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	*routine(void *philo)
 	t_philo	*casted;
 
 	casted = (t_philo *)philo;
-	while (true)
+	while (!casted->args->someone_died)
 	{
 		eat(casted);
 		_sleep(casted);

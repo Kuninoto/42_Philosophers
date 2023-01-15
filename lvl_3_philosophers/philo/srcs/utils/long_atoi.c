@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 18:14:25 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 22:16:27 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ int	long_atoi(char *str)
 
 	res = 0;
 	i = 0;
+	while (is_spaces(str[i]))
+		i += 1;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
