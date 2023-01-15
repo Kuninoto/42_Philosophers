@@ -39,11 +39,25 @@ Mutex vs. Semaphores:
 https://www.geeksforgeeks.org/mutex-vs-semaphore/  
 https://www.youtube.com/watch?v=8wcuLCvMmF8  
 
- **| Mutex vs. Semaphores Cheat Sheet: | **                                                               
-:--------------------------------------------------------------------------------------------------------:
- |  Behaves like a lock | Behaves like a limited inventory |                                          
- |  pthread_mutex_lock() | sem_wait(), decrements the number of available things, if sem == 0, waits. |   
- |  pthread_mutex_unlock() | sem_post(), increments back the number of available things |                 
+Mutex vs. Semaphores Rule of Thumb:
+<table>
+ <tr>
+   <th>Mutex</th>
+   <th>Semaphores</th>
+ </tr>
+ <tr>
+   <td>Behaves like a lock</td>
+   <td>Behaves like a limited inventory</td>
+ </tr>
+ <tr>
+   <td>pthread_mutex_lock()</td>
+   <td>sem_wait(), decrements the number of available things, if sem == 0, waits.</td>
+ </tr>
+ <tr>
+  <td>pthread_mutex_unlock()</td>
+  <td>sem_post(), increments back the number of available things</td>
+ </tr>
+</table>
 
 Dining Philosophers problem using Semaphores:    
 https://www.geeksforgeeks.org/dining-philosopher-problem-using-semaphores/?ref=lbp    
