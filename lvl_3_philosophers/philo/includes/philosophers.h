@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 18:19:39 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:34:22 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@
 # include <pthread.h> // POSIX thread API
 # include <stdbool.h> // boolean data type
 
-# define TO_MICROSEC 1000
+# define MICROSEC 1000
+# define MUTEX_INIT_ERR "Failed to initialize a mutex"
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -58,8 +59,8 @@ typedef enum e_event_id {
 // Init forks (mutexes)
 pthread_mutex_t	*init_forks(t_args *args);
 
-// Destroys all forks & monitoring_mutex
-void			destroy_mutexes(t_args *args, pthread_mutex_t *forks);
+// Destroys all forks & monitoring mutexes
+void			destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos);
 
 // INPUT ------------------------------------
 
@@ -72,7 +73,7 @@ would overflow an integer or if it would be negative */
 int				long_atoi(char *str);
 
 /* 	Initializes and fills a t_args structure */
-t_args			init_fill_args(char **argv);
+t_args			init_args(char **argv);
 
 // PHILOSOPHERS -------------------------
 
@@ -80,7 +81,8 @@ t_args			init_fill_args(char **argv);
 t_philo			*init_philos(t_args *args, pthread_mutex_t *forks_array);
 
 /* Creates Philosophers and supervisor threads */
-void			create_threads(t_args *args, t_philo *philos);
+void			create_threads(t_args *args, t_philo *philos,
+					pthread_mutex_t *forks);
 
 /* Philosophers' routine: eat, sleep, think */
 void			*routine(void *philo);
