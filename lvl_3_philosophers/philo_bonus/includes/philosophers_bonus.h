@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 22:58:44 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 16:39:54 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,19 @@
 # include <sys/types.h> // fork()
 # include <sys/time.h> // gettimeofday()
 # include <sys/wait.h> // waitpid()
-# include <pthread.h> // POSIX thread API, pthread_* functions()
+# include <pthread.h> // POSIX thread API, pthread_* functions
 # include <stdbool.h> // boolean data type
-# include <fcntl.h> // For O_* constants
-# include <sys/stat.h> // For mode constants
+# include <fcntl.h> // O_* constants
+# include <sys/stat.h> // mode constants
 # include <semaphore.h> // POSIX semaphore API, sem_* functions
-# include <signal.h> // kill()
+# include <signal.h> // kill(), SIG* constants
 
-# define TO_MICROSEC 1000
+/* CONSTANTS */
+
+# define MICROSEC 1000
 # define ALL_ALIVE 1
-# define FORK_ERROR "fork failed()"
+# define SEM_FORKS "/forks"
+# define SEM_PRINT "/print"
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -37,9 +40,8 @@ typedef struct s_args {
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_times;
-	sem_t				forks;
-	sem_t				monitoring_sem;
-	bool				is_anyone_dead;
+	sem_t				*forks;
+	sem_t				*print_sem;
 }				t_args;
 
 typedef struct s_philo {
@@ -72,7 +74,7 @@ would overflow an integer, if it would be negative or 0 */
 int				long_atoi(char *str);
 
 /* 	Initializes and fills a t_args structure */
-t_args			init_fill_args(char **argv);
+t_args			init_args(char **argv);
 
 // PHILOSOPHERS -------------------------
 
@@ -99,7 +101,13 @@ and exits the program on failure */
 void			panic(char *error_msg);
 
 /* Frees args and philosophers array */
-void	destroy(t_args *args, t_philo *philo_array);
+void			destroy(t_args *args, t_philo *philo_array);
+
+static inline void	unlink_sems(void)
+{
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_PRINT);
+}
 
 /* Checks if c is a character that represents a digit or a signal */
 static inline bool	isdigit_or_signal(char c)

@@ -6,14 +6,14 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 21:15:37 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 14:44:46 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
 /* Thread that watches the philosophers activity */
-void	*supervisor(void *philos)
+static void	*supervisor(void *philos)
 {
 	t_philo	*casted;
 	int		satisfied_philos;
@@ -43,7 +43,7 @@ void	*supervisor(void *philos)
 }
 
 /* Creates and makes main thread join supervisor thread */
-void	create_supervisor(void *philos)
+static void	create_supervisor(void *philos)
 {
 	pthread_t	supervisor_id;
 
