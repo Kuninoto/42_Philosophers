@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 14:56:05 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:19:39 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ all arguments provided are digits */
 void			validate_args(int argc, char **argv);
 
 /* Atoi reimplementation. Exits the program on failure if the result 
-would overflow an integer, if it would be negative or 0 */
+would overflow an integer or if it would be negative */
 int				long_atoi(char *str);
 
 /* 	Initializes and fills a t_args structure */
