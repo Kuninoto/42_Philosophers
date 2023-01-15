@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 16:34:07 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:13:50 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static void	*supervisor(void *philos)
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
-			usleep(MICROSEC);
 		}
 	}
 	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);

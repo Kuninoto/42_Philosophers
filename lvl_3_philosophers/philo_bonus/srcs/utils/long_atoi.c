@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/14 17:44:45 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 18:20:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ int	long_atoi(char *str)
 	}
 	if (res > INT_MAX || res <= INT_MIN)
 		panic("One of the arguments overflows integer type");
-	else if (res == 0)
-		panic("Arguments must be bigger than 0");
 	return ((int)res);
 }
