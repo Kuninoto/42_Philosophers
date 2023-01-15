@@ -6,13 +6,13 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 14:44:46 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 19:19:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers.h"
 
-/* Thread that watches the philosophers activity */
+/* Thread that watches the philosophers' activity */
 static void	*supervisor(void *philos)
 {
 	t_philo	*casted;
@@ -51,7 +51,7 @@ static void	create_supervisor(void *philos)
 	pthread_join(supervisor_id, NULL);
 }
 
-void	create_threads(t_args *args, t_philo *philos)
+void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 {
 	int	i;
 
@@ -62,12 +62,12 @@ void	create_threads(t_args *args, t_philo *philos)
 		if (pthread_create(&philos[i].t_id, NULL,
 				routine, (void *)&philos[i]) != 0)
 		{
-			free(philos);
+			destroy(args, forks, philos);
 			panic("Failed to create a thread");
 		}
 		if (pthread_detach(philos[i].t_id) != 0)
 		{
-			free(philos);
+			destroy(args, forks, philos);
 			panic("Failed to detach a thread");
 		}
 		i += 1;

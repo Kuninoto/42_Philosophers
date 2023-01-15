@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_fill_args.c                                   :+:      :+:    :+:   */
+/*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 18:16:56 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2023/01/15 18:53:37 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/15 19:22:07 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers.h"
 
-t_args	init_fill_args(char **argv)
+void	destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos)
 {
-	t_args	args;
+	int	i;
 
-	args.nbr_of_philo = long_atoi(argv[1]);
-	args.time_to_die = long_atoi(argv[2]);
-	args.time_to_eat = long_atoi(argv[3]);
-	args.time_to_sleep = long_atoi(argv[4]);
-	if (argv[5])
-		args.must_eat_times = long_atoi(argv[5]);
-	else
-		args.must_eat_times = -1;
-	pthread_mutex_init(&args.monitoring_mutex, NULL);
-	return (args);
+	i = 0;
+	while (i < args->nbr_of_philo)
+	{
+		pthread_mutex_destroy(&forks[i]);
+		philos[i].left_fork = NULL;
+		philos[i].right_fork = NULL;
+		i += 1;
+	}
+	pthread_mutex_destroy(&args->monitoring_mutex);
+	free(forks);
+	forks = NULL;
+	free(philos);
+	philos = NULL;
 }

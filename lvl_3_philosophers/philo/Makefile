@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/14 17:08:55 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/15 19:37:30 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,10 +17,11 @@ RM = rm -rf
 NAME = philo
 SRCS =  srcs/utils/long_atoi.c\
 		srcs/utils/panic.c\
+		srcs/utils/destroy.c\
 		srcs/utils/get_time.c\
-		srcs/utils/fork_utils.c\
+		srcs/utils/init_forks.c\
 		srcs/input/validate_args.c\
-		srcs/input/init_fill_args.c\
+		srcs/input/init_args.c\
 		srcs/philos/init_philos.c\
 		srcs/philos/routine.c\
 		srcs/create_threads.c\
