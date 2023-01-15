@@ -4,9 +4,31 @@
 
 ### Installing and running the project:
 
+1- Clone this repository
+	
+	git clone https://github.com/Kuninoto/42_Philosophers
+3- Navigate to _lvl_3_philosophers_ and run `make`
+	
+	cd 42_Philosophers/lvl_3_philosophers
+   	make
+4- `make clean` so that you don't keep those object files that you won't need anymore
+
+	make clean
+5- Run your new dining philosopher simulation program!
+
+	./philo nbr_of_philos time_to_die time_to_eat time_to_sleep [nbr_of_times_each_philo_must_eat]
+
 ###  Subject: [Philosophers en_subject](./extras/en.subject_philosophers.pdf)
 
+
+Mandatory: Solving the dining philosophers problem using **threads** and **mutexes**
+Bonus: Solving the same problem but this time with **processes** and **semaphores**
+
 #### Makefile Available Targets:  
+`make` or `make all` - compiles philo or philo_bonus (depending on the folder you're in)   
+`make clean` - wipes all object files   
+`make fclean` - deletes executable and all object files   
+`make re` - fclean  + all  
 
 ### Useful links:  
 General thread understanding:  
