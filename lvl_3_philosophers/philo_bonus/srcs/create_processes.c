@@ -6,13 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 16:21:39 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:26:08 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_bonus.h"
-
-#define FORK_ERR "failed to fork()"
 
 static void	end_processes(t_philo *philos)
 {
@@ -21,59 +19,67 @@ static void	end_processes(t_philo *philos)
 	i = 0;
 	while (i < philos->args->nbr_of_philo)
 	{
-		kill(philos[i].pid, SIGKILL);
+		kill(philos[i].pid, SIGTERM);
 		i += 1;
 	}
 }
 
-/* Process that watches the philosophers activity */
-static void	supervisor(void *philos)
+/* Thread that watches the philosophers activity */
+static void	*supervisor(void *philo)
 {
 	t_philo	*casted;
-	int		satisfied_philos;
-	int		i;
 
-	casted = (t_philo *)philos;
-	satisfied_philos = 0;
-	while (satisfied_philos != casted->args->nbr_of_philo)
+	casted = (t_philo *)philo;
+	while (true)
 	{
-		i = 0;
-		while (i < casted->args->nbr_of_philo)
+		if (starved(casted) && casted->can_die)
 		{
-			if (starved(&casted[i]) && casted[i].can_die)
-			{
-				end_processes(casted);
-				monitoring(casted, DEAD);
-				exit(EXIT_SUCCESS);
-			}
-			printf("eaten meals = %d\n", casted[i].eaten_meals);
-			if (casted[i].eaten_meals == casted->args->must_eat_times)
-				satisfied_philos += 1;
-			i += 1;
+			casted->args->someone_died = true;
+			monitoring(casted, DEAD);
+			sem_wait(casted->args->print_sem);
+			exit(SOMEONE_DIED);
 		}
-		//printf("Satisfied_philos = %d\n", satisfied_philos);
 	}
-	end_processes(casted);
-	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
-	exit(EXIT_SUCCESS);
+	return (NULL);
 }
 
-/* Creates supervisor process and makes main process wait for its pid */
-static void	create_supervisor(t_args *args, t_philo *philos)
+/* Creates supervisor thread and philosopher process. */
+static void	create_philo(t_philo *philo)
 {
-	int			exit_status;
-	pid_t		supervisor_pid;
+	pthread_t	supervisor_tid;
 
-	supervisor_pid = fork();
-	if (supervisor_pid == -1)
+	pthread_create(&supervisor_tid, NULL, supervisor, (void *)philo);
+	pthread_detach(supervisor_tid);
+	routine(philo);
+}
+
+static void	watch_dinner(t_philo *philos, t_args *args)
+{
+	int	exit_status;
+	int	i;
+
+	exit_status = 0;
+	i = 0;
+	while (i < philos->args->nbr_of_philo)
 	{
-		destroy(args, philos);
-		panic(FORK_ERR);
+		waitpid(-1, &exit_status, 0);
+		if (WIFEXITED(exit_status))
+		{
+			if (WEXITSTATUS(exit_status) == SOMEONE_DIED)
+				break ;
+			if (WEXITSTATUS(exit_status) == EATEN_ALL_MEALS)
+			{
+				if (i == (args->nbr_of_philo - 1))
+				{
+					printf("Every Philosopher ate %d meals!\n",
+						args->must_eat_times);
+					break ;
+				}
+			}
+		}
+		i += 1;
 	}
-	if (supervisor_pid == 0)
-		supervisor(philos);
-	else
-		waitpid(-1, exit_status, 0);
+	end_processes(philos);
 }
 
 void	create_processes(t_args *args, t_philo *philos)
@@ -91,8 +97,9 @@ void	create_processes(t_args *args, t_philo *philos)
 			panic(FORK_ERR);
 		}
 		if (philos[i].pid == 0)
-			routine(&philos[i]);
+			create_philo(&philos[i]);
+		usleep(1);
 		i += 1;
 	}
-	create_supervisor(args, philos);
+	watch_dinner(philos, args);
 }

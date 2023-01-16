@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
+#    By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/15 15:58:06 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/16 19:22:01 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRCS =  srcs/utils/long_atoi.c\
 		srcs/utils/panic.c\
 		srcs/utils/destroy.c\
 		srcs/utils/get_time.c\
+		srcs/utils/open_sems.c\
 		srcs/input/validate_args.c\
 		srcs/input/init_args.c\
 		srcs/philos/init_philos.c\

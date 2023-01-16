@@ -21,8 +21,8 @@
 ###  Subject: [Philosophers en_subject](./extras/en.subject_philosophers.pdf)
 
 
-Mandatory: Solving the dining philosophers problem using **threads** and **mutexes**
-Bonus: Solving the same problem but this time with **processes** and **semaphores**
+Mandatory: Solving the dining philosophers problem using **threads** and **mutexes**  
+Bonus: Solving the same problem but this time with **processes** and **semaphores**  
 
 #### Makefile Available Targets:  
 `make` or `make all` - compiles philo or philo_bonus (depending on the folder you're in)   
@@ -56,6 +56,7 @@ https://www.geeksforgeeks.org/use-posix-semaphores-c/
 https://www.youtube.com/watch?v=YSn8_XdGH7c  
 https://www.youtube.com/watch?v=XDIOC2EY5JE  
 https://www.youtube.com/watch?v=ukM_zzrIeXs  
+https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_semaphores.htm  
 
 Mutex vs. Semaphores:  
 https://www.geeksforgeeks.org/mutex-vs-semaphore/  
@@ -81,8 +82,8 @@ Mutex vs. Semaphores Rule of Thumb:
  </tr>
 </table>
 
-Dining Philosophers problem using Semaphores:    
-https://www.geeksforgeeks.org/dining-philosopher-problem-using-semaphores/?ref=lbp    
+Inter Process Communication
+https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_shared_memory.htm  
 
 ## Disclaimer
 > At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the [Norm](./extras/en_norm.pdf), the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
