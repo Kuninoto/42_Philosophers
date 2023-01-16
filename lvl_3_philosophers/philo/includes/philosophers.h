@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:17:06 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:33:37 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,6 @@ void			create_threads(t_args *args, t_philo *philos,
 /* Philosophers' routine: eat, sleep, think */
 void			*routine(void *philo);
 
-
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
 
@@ -108,7 +107,7 @@ can pass without eating */
 static inline bool	starved(t_philo *philo)
 {
 	return (((get_time() - philo->last_meal_time)
-					>= philo->args->time_to_die));
+			>= philo->args->time_to_die));
 }
 
 static inline bool	isdigit_or_signal(char c)
@@ -121,8 +120,8 @@ static inline bool	isdigit_or_signal(char c)
 
 static inline bool	is_spaces(char c)
 {
-	if (c == '\t' || c == '\n' || c == '\v' ||
-			c == '\f' || c == '\r' || c == ' ')
+	if (c == '\t' || c == '\n' || c == '\v'
+		|| c == '\f' || c == '\r' || c == ' ')
 		return (true);
 	return (false);
 }

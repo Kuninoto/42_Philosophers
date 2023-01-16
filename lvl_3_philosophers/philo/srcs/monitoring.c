@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 15:24:21 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:23:59 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	monitoring(t_philo *philo, t_event_id event)
 	const char	*events[6] = {DEAD_STR, EAT_STR, THINK_STR,
 		SLEEP_STR, TAKE_FORK_STR, DROP_FORK_STR};
 
+	if (philo->args->someone_died)
+		return ;
 	timestamp = get_time() - philo->start_time;
 	pthread_mutex_lock(&philo->args->monitoring_mutex);
 	printf("%ld %d %s", timestamp, philo->philo_nbr, events[event]);

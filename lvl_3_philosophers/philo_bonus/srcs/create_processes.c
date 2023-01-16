@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_processes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:52:18 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 16:21:39 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,14 +46,12 @@ static void	supervisor(void *philos)
 				monitoring(casted, DEAD);
 				exit(EXIT_SUCCESS);
 			}
-			// printf("eaten meals = %d\n", casted[i].eaten_meals);
-			/* Eaten_meals are always 0 because processes do not have shared memory. 
-				That's why sometimes philo 1 is eating and dieing at the same time  */
+			printf("eaten meals = %d\n", casted[i].eaten_meals);
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
 		}
-		// printf("Satisfied_philos = %d\n", satisfied_philos);
+		//printf("Satisfied_philos = %d\n", satisfied_philos);
 	}
 	end_processes(casted);
 	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
@@ -63,6 +61,7 @@ static void	supervisor(void *philos)
 /* Creates supervisor process and makes main process wait for its pid */
 static void	create_supervisor(t_args *args, t_philo *philos)
 {
+	int			exit_status;
 	pid_t		supervisor_pid;
 
 	supervisor_pid = fork();
@@ -74,7 +73,7 @@ static void	create_supervisor(t_args *args, t_philo *philos)
 	if (supervisor_pid == 0)
 		supervisor(philos);
 	else
-		waitpid(supervisor_pid, NULL, 0);
+		waitpid(-1, exit_status, 0);
 }
 
 void	create_processes(t_args *args, t_philo *philos)
