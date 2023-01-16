@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:02:26 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 22:52:18 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ static void	supervisor(void *philos)
 				monitoring(casted, DEAD);
 				exit(EXIT_SUCCESS);
 			}
-			//printf("eaten meals = %d\n", casted[i].eaten_meals);
+			// printf("eaten meals = %d\n", casted[i].eaten_meals);
+			/* Eaten_meals are always 0 because processes do not have shared memory. 
+				That's why sometimes philo 1 is eating and dieing at the same time  */
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
 				satisfied_philos += 1;
 			i += 1;
 		}
-		//printf("Satisfied_philos = %d\n", satisfied_philos);
+		// printf("Satisfied_philos = %d\n", satisfied_philos);
 	}
 	end_processes(casted);
 	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);

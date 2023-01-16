@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 16:43:19 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/15 22:46:25 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	eat(t_philo *philo)
 	pick_forks(philo);
 	philo->can_die = false;
 	monitoring(philo, EAT);
-	philo->last_meal_time = get_time();
 	usleep(philo->args->time_to_eat * MICROSEC);
+	philo->last_meal_time = get_time();
 	drop_forks(philo);
 	philo->eaten_meals += 1;
 	philo->can_die = true;
