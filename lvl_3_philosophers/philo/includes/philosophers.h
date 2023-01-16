@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 16:33:37 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:47:09 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_args {
 	int					time_to_sleep;
 	int					must_eat_times;
 	pthread_mutex_t		monitoring_mutex;
+	int					satisfied_philos;
 	bool				someone_died;
 }				t_args;
 
@@ -108,6 +109,13 @@ static inline bool	starved(t_philo *philo)
 {
 	return (((get_time() - philo->last_meal_time)
 			>= philo->args->time_to_die));
+}
+
+/* Checks if all philosophers have ate must_eat_times */
+static inline bool	all_ate_n_times(t_philo *philo)
+{
+	return (philo->args->satisfied_philos
+			== philo->args->nbr_of_philo);
 }
 
 static inline bool	isdigit_or_signal(char c)

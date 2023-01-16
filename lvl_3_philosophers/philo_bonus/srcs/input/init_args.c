@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:35:30 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:17:56 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,7 @@ t_args	init_args(char **argv)
 		printf(MUST_EAT_0);
 		exit(EXIT_SUCCESS);
 	}
-	unlink_sems();
-	args.forks = sem_open(SEM_FORKS, O_CREAT, S_IRWXU, args.nbr_of_philo);
-	if (args.forks == SEM_FAILED)
-		panic("Failed to open forks semaphore");
-	args.print_sem = sem_open(SEM_PRINT, O_CREAT, S_IRWXU, 1);
-	if (args.print_sem == SEM_FAILED)
-	{
-		sem_close(args.forks);
-		panic("Failed to open print semaphore");
-	}
+	args.someone_died = false;
+	open_sems(&args);
 	return (args);
 }

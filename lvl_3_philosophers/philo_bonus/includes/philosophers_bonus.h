@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:17:44 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 19:21:43 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,13 @@
 /* CONSTANTS */
 
 # define MICROSEC 1000
-# define ALL_ALIVE 1
 # define SEM_FORKS "/forks"
 # define SEM_PRINT "/print"
+# define FORK_ERR "failed to fork()"
+# define THREAD_CREATE_ERR "Failed to create a thread"
+# define THREAD_JOIN_ERR "Failed to join a thread"
+# define EATEN_ALL_MEALS 0
+# define SOMEONE_DIED 1
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -40,6 +44,7 @@ typedef struct s_args {
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_times;
+	bool				someone_died;
 	sem_t				*forks;
 	sem_t				*print_sem;
 }				t_args;
@@ -47,7 +52,7 @@ typedef struct s_args {
 typedef struct s_philo {
 	int					philo_nbr;
 	pid_t				pid;
-	int					eaten_meals;
+	int					must_eat_meals;
 	suseconds_t			last_meal_time;
 	suseconds_t			start_time;
 	bool				can_die;
@@ -73,6 +78,9 @@ void			validate_args(int argc, char **argv);
 would overflow an integer or if it would be negative */
 int				long_atoi(char *str);
 
+/* Unlinks and opens "/forks" and "/print" named semaphores */
+void			open_sems(t_args *args);
+
 /* 	Initializes and fills a t_args structure */
 t_args			init_args(char **argv);
 
@@ -86,7 +94,6 @@ void			create_processes(t_args *args, t_philo *philos);
 
 /* Philosophers' routine: eat, sleep, think */
 void			routine(t_philo *philo);
-
 
 /* Prints Philosophers' activity logs */
 void			monitoring(t_philo *philo, t_event_id event);
@@ -108,18 +115,12 @@ can pass without eating */
 static inline bool	starved(t_philo *philo)
 {
 	return (((get_time() - philo->last_meal_time)
-					>= philo->args->time_to_die));
+			>= philo->args->time_to_die));
 }
 
 /* Frees args and philosophers array */
 void			destroy(t_args *args, t_philo *philo_array);
 
-/* Unlinks "/forks" and "/print" named semaphores */
-static inline void	unlink_sems(void)
-{
-	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_PRINT);
-}
 
 static inline bool	isdigit_or_signal(char c)
 {
@@ -131,8 +132,8 @@ static inline bool	isdigit_or_signal(char c)
 
 static inline bool	is_spaces(char c)
 {
-	if (c == '\t' || c == '\n' || c == '\v' ||
-			c == '\f' || c == '\r' || c == ' ')
+	if (c == '\t' || c == '\n' || c == '\v'
+		|| c == '\f' || c == '\r' || c == ' ')
 		return (true);
 	return (false);
 }

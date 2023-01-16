@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:46:25 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 18:10:47 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static void	eat(t_philo *philo)
 	usleep(philo->args->time_to_eat * MICROSEC);
 	philo->last_meal_time = get_time();
 	drop_forks(philo);
-	philo->eaten_meals += 1;
+	philo->must_eat_meals -= 1;
 	philo->can_die = true;
 }
 
@@ -51,10 +51,15 @@ static void	_sleep(t_philo *philo)
 
 void	routine(t_philo *philo)
 {
-	while (ALL_ALIVE)
+	while (!philo->args->someone_died
+		&& philo->must_eat_meals != 0)
 	{
 		eat(philo);
 		_sleep(philo);
 		monitoring(philo, THINK);
 	}
+	if (philo->args->someone_died)
+		exit(SOMEONE_DIED);
+	else
+		exit(EATEN_ALL_MEALS);
 }

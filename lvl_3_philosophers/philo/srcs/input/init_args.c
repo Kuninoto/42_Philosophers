@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 20:15:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:45:19 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_args	init_args(char **argv)
 		exit(EXIT_SUCCESS);
 	}
 	pthread_mutex_init(&args.monitoring_mutex, NULL);
+	args.satisfied_philos = 0;
 	args.someone_died = false;
 	return (args);
 }

@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 16:44:24 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 20:53:19 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@
 static void	*supervisor(void *philos)
 {
 	t_philo	*casted;
-	int		satisfied_philos;
 	int		i;
 
 	casted = (t_philo *)philos;
-	satisfied_philos = 0;
-	while (satisfied_philos != casted->args->nbr_of_philo)
+	while (!all_ate_n_times(casted))
 	{
 		i = 0;
 		while (i < casted->args->nbr_of_philo)
@@ -37,7 +35,7 @@ static void	*supervisor(void *philos)
 				return (NULL);
 			}
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
-				satisfied_philos += 1;
+				casted->args->satisfied_philos += 1;
 			i += 1;
 		}
 	}
@@ -46,17 +44,18 @@ static void	*supervisor(void *philos)
 }
 
 /* Creates and makes main thread join supervisor thread */
-static void	create_supervisor(t_args *args, pthread_mutex_t *forks, t_philo *philos)
+static void	create_supervisor(t_args *args, pthread_mutex_t *forks,
+											t_philo *philos)
 {
-	pthread_t	supervisor_id;
+	pthread_t	supervisor_tid;
 
-	if (pthread_create(&supervisor_id, NULL,
+	if (pthread_create(&supervisor_tid, NULL,
 			supervisor, (void *)philos) != 0)
 	{
 		destroy(args, forks, philos);
 		panic(THREAD_CREATE_ERR);
 	}
-	if (pthread_join(supervisor_id, NULL) != 0)
+	if (pthread_join(supervisor_tid, NULL) != 0)
 	{
 		destroy(args, forks, philos);
 		panic(THREAD_JOIN_ERR);
