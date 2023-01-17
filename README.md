@@ -90,6 +90,9 @@ https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-fork-create-new-process#rt
 waitpid() documentation:  
 https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-waitpid-wait-specific-child-process-end
 
+sem_open() documentation:
+https://www.ibm.com/docs/en/i/7.1?topic=ssw_ibm_i_71/apis/ipcsemo.html  
+
 Inter Process Communication
 https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_shared_memory.htm  
 
