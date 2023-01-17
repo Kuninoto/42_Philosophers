@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:46:10 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:09:12 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_philo {
 	suseconds_t			last_meal_time;
 	suseconds_t			start_time;
 	bool				can_die;
+	bool				is_alive;
 	t_args				*args;
 }				t_philo;
 

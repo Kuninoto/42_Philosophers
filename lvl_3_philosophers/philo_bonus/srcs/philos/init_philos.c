@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:59:41 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:03:09 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:10:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_philo	*init_philos(t_args *args)
 		philos[i].must_eat_meals = args->must_eat_times;
 		philos[i].last_meal_time = get_time();
 		philos[i].can_die = true;
+		philos[i].is_alive = true;
 		philos[i].args = args;
 		i += 1;
 	}

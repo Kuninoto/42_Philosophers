@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:44:11 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:14:48 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ static void	*supervisor(void *philo)
 	{
 		if (starved(casted) && casted->can_die)
 		{
-			// someone_died has no effect on child processes
-			//casted->args->someone_died = true;
+			casted->is_alive = false;
 			monitoring(casted, DEAD);
 			sem_wait(casted->args->print_sem);
 			exit(SOMEONE_DIED);
 		}
+		if (casted->must_eat_meals == 0)
+			exit(EATEN_ALL_MEALS);
 	}
 	return (NULL);
 }
@@ -99,6 +100,7 @@ void	create_processes(t_args *args, t_philo *philos)
 			destroy(args, philos);
 			panic(FORK_ERR);
 		}
+		// Every philosopher must destroy itself upon exit
 		if (philos[i].pid == 0)
 			create_philo(&philos[i]);
 		usleep(1);

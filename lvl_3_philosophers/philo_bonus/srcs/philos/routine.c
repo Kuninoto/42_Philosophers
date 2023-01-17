@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:45:48 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 12:10:46 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ static void	eat(t_philo *philo)
 	pick_forks(philo);
 	philo->can_die = false;
 	monitoring(philo, EAT);
-	usleep(philo->args->time_to_eat * MICROSEC);
 	philo->last_meal_time = get_time();
+	usleep(philo->args->time_to_eat * MICROSEC);
 	drop_forks(philo);
 	philo->must_eat_meals -= 1;
 	philo->can_die = true;
@@ -51,21 +51,20 @@ static void	_sleep(t_philo *philo)
 
 void	routine(t_philo *philo)
 {
-	while (philo->must_eat_meals != 0)
+	while (philo->must_eat_meals != 0 && philo->is_alive)
 	{
 		eat(philo);
 		_sleep(philo);
 		monitoring(philo, THINK);
 	}
-/* 	if (philo->args->someone_died)
+	if (!philo->is_alive)
 	{
 		printf("\nSOMEONE DIED!!!\n");
 		exit(SOMEONE_DIED);
 	}
 	else
-	{ */
-	// someone_died must be a semaphore
-	printf("\nI've ate all my meals!!!!\n");
-	exit(EATEN_ALL_MEALS);
-//	}
+	{
+		printf("\nI've ate all my meals!!!!\n");
+		exit(EATEN_ALL_MEALS);
+	}
 }
