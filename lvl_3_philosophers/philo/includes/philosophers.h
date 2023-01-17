@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 20:47:09 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 00:19:25 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <stdbool.h> // boolean data type
 
 # define MICROSEC 1000
+# define THREAD_CREATE_ERR "Failed to create a thread"
+# define THREAD_JOIN_ERR "Failed to join a thread"
+# define MALLOC_ERR "malloc() failed to allocate memory"
+# define MUTEX_INIT_ERR "Failed to initialize mutex"
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -60,7 +64,7 @@ typedef enum e_event_id {
 // Init forks (mutexes)
 pthread_mutex_t	*init_forks(t_args *args);
 
-// Destroys all forks & monitoring mutexes
+// Destroys all monitoring & forks mutexes and philosophers array
 void			destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos);
 
 // INPUT ------------------------------------
@@ -69,9 +73,9 @@ void			destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos);
 all arguments provided are digits */
 void			validate_args(int argc, char **argv);
 
-/* Atoi reimplementation. Exits the program on failure if the result 
+/* Custom atoi() implementation. Exits the program on failure if the result 
 would overflow an integer or if it would be negative */
-int				long_atoi(char *str);
+int				ft_atoi(char *str);
 
 /* 	Initializes and fills a t_args structure */
 t_args			init_args(char **argv);
@@ -111,11 +115,11 @@ static inline bool	starved(t_philo *philo)
 			>= philo->args->time_to_die));
 }
 
-/* Checks if all philosophers have ate must_eat_times */
+/* Checks if all philosophers ate must_eat_times */
 static inline bool	all_ate_n_times(t_philo *philo)
 {
 	return (philo->args->satisfied_philos
-			== philo->args->nbr_of_philo);
+		== philo->args->nbr_of_philo);
 }
 
 static inline bool	isdigit_or_signal(char c)

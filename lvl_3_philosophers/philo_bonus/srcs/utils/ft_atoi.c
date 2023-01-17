@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   long_atoi.c                                        :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 22:16:27 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 00:19:55 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
-#include "../../includes/philosophers.h"
+#include "../../includes/philosophers_bonus.h"
 
-int	long_atoi(char *str)
+int	ft_atoi(char *str)
 {
 	ssize_t	res;
 	int		i;

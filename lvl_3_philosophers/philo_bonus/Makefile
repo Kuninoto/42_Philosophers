@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+         #
+#    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/16 19:22:01 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/17 00:18:29 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 
 NAME = philo_bonus
-SRCS =  srcs/utils/long_atoi.c\
+SRCS =  srcs/utils/ft_atoi.c\
 		srcs/utils/panic.c\
 		srcs/utils/destroy.c\
 		srcs/utils/get_time.c\

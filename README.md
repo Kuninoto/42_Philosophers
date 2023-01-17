@@ -57,6 +57,8 @@ https://www.youtube.com/watch?v=YSn8_XdGH7c
 https://www.youtube.com/watch?v=XDIOC2EY5JE  
 https://www.youtube.com/watch?v=ukM_zzrIeXs  
 https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_semaphores.htm  
+https://www.timesmojo.com/can-semaphore-be-initialized-to-negative/  
+https://stackoverflow.com/questions/15164484/when-to-call-sem-unlink  
 
 Mutex vs. Semaphores:  
 https://www.geeksforgeeks.org/mutex-vs-semaphore/  
@@ -81,6 +83,12 @@ Mutex vs. Semaphores Rule of Thumb:
   <td>sem_post(), increments back the number of available things</td>
  </tr>
 </table>
+
+fork() documentation:  
+https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-fork-create-new-process#rtfor  
+
+waitpid() documentation:  
+https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-waitpid-wait-specific-child-process-end
 
 Inter Process Communication
 https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_shared_memory.htm  

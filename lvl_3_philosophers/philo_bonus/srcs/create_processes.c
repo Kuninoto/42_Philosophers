@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   create_processes.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 19:26:08 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 00:00:49 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosophers_bonus.h"
 
+/* Kills all philosophers processes */
 static void	end_processes(t_philo *philos)
 {
 	int	i;
@@ -43,7 +44,7 @@ static void	*supervisor(void *philo)
 	return (NULL);
 }
 
-/* Creates supervisor thread and philosopher process. */
+/* Creates supervisor thread and makes philosopher process enter routine() */
 static void	create_philo(t_philo *philo)
 {
 	pthread_t	supervisor_tid;
@@ -53,7 +54,7 @@ static void	create_philo(t_philo *philo)
 	routine(philo);
 }
 
-static void	watch_dinner(t_philo *philos, t_args *args)
+static void	wait_childs(t_philo *philos, t_args *args)
 {
 	int	exit_status;
 	int	i;
@@ -101,5 +102,5 @@ void	create_processes(t_args *args, t_philo *philos)
 		usleep(1);
 		i += 1;
 	}
-	watch_dinner(philos, args);
+	wait_childs(philos, args);
 }
