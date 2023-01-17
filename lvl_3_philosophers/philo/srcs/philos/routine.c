@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 12:06:28 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:42:28 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ monitoring messages */
 static void	eat(t_philo *philo)
 {
 	pick_forks(philo);
-	philo->can_die = false;
+	pthread_mutex_lock(&philo->can_die);
 	monitoring(philo, EAT);
 	philo->last_meal_time = get_time();
+	pthread_mutex_unlock(&philo->can_die);
 	usleep(philo->args->time_to_eat * MICROSEC);
-	philo->can_die = true;
 	drop_forks(philo);
 	philo->eaten_meals += 1;
 }
@@ -58,6 +58,13 @@ void	*routine(void *philo)
 	while (!casted->args->someone_died
 		&& !all_ate_n_times(casted))
 	{
+		if (casted->args->nbr_of_philo == 1)
+		{
+			pthread_mutex_lock(casted->left_fork);
+			monitoring(philo, FORK);
+			casted->last_meal_time = get_time();
+			return (NULL);
+		}
 		eat(casted);
 		_sleep(casted);
 		monitoring(casted, THINK);

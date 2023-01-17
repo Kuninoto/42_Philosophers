@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 02:43:10 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:36:07 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,33 @@ static void	*supervisor(void *philos)
 	int		i;
 
 	casted = (t_philo *)philos;
-	while (!all_ate_n_times(casted))
+	while (true)
 	{
-		i = 0;
-		while (i < casted->args->nbr_of_philo)
+		i = -1;
+		while (++i < casted->args->nbr_of_philo)
 		{
-			if (starved(&casted[i]) && casted[i].can_die)
+			pthread_mutex_lock(&casted[i].can_die);
+			if (starved(&casted[i]))
 			{
 				monitoring(casted, DEAD);
 				casted->args->someone_died = true;
+				pthread_mutex_unlock(&casted[i].can_die);
 				pthread_mutex_unlock(&casted[i].args->monitoring_mutex);
 				return (NULL);
 			}
+			pthread_mutex_unlock(&casted[i].can_die);
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
+			{
 				casted->args->satisfied_philos += 1;
-			i += 1;
+				if (all_ate_n_times(casted))
+				{
+					printf("Every Philosopher had %d meals!\n",
+						casted->args->must_eat_times);
+					return (NULL);
+				}
+			}
 		}
 	}
-	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
-	return (NULL);
 }
 
 /* Creates and makes main thread join supervisor thread */

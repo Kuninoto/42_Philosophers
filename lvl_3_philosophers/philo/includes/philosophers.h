@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 02:43:42 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:23:59 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ typedef struct s_philo {
 	suseconds_t			last_meal_time;
 	pthread_t			t_id;
 	suseconds_t			start_time;
-	bool				can_die;
+	pthread_mutex_t		can_die;
 	t_args				*args;
 }				t_philo;
 

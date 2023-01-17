@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_philos.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:59:41 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 02:43:23 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 18:32:29 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,20 @@ t_philo	*init_philos(t_args *args, pthread_mutex_t *forks_array)
 		destroy(args, forks_array, NULL);
 		panic(MALLOC_ERR);
 	}
-	i = 0;
-	while (i < args->nbr_of_philo)
+	i = -1;
+	while (++i < args->nbr_of_philo)
 	{
 		philos[i].philo_nbr = i + 1;
 		philos[i].eaten_meals = 0;
 		philos[i].left_fork = &forks_array[i];
 		philos[i].right_fork = &forks_array[(i + 1) % args->nbr_of_philo];
 		philos[i].last_meal_time = get_time();
-		philos[i].can_die = true;
+		if (pthread_mutex_init(&philos[i].can_die, NULL) != 0)
+		{
+			destroy(args, forks_array, philos);
+			panic(MUTEX_INIT_ERR);
+		}
 		philos[i].args = args;
-		i += 1;
 	}
 	return (philos);
 }
