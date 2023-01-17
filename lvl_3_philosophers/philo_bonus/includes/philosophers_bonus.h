@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:03:29 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:46:10 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct s_args {
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_times;
-	bool				someone_died;
 	sem_t				*forks;
 	sem_t				*print_sem;
 }				t_args;

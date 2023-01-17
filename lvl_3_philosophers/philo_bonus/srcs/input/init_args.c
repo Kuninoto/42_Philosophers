@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 00:18:49 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:45:56 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_args	init_args(char **argv)
 		printf(MUST_EAT_0);
 		exit(EXIT_SUCCESS);
 	}
-	args.someone_died = false;
 	open_sems(&args);
 	return (args);
 }

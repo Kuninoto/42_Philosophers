@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/17 00:19:34 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/17 02:22:30 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,5 +42,7 @@ fclean: clean
 	$(RM) $(NAME)
 	
 re: fclean all
+
+.PHONY: all clean fclean re
 
 .SILENT:
