@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 19:21:43 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:03:29 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,21 @@
 /* CONSTANTS */
 
 # define MICROSEC 1000
-# define SEM_FORKS "/forks"
-# define SEM_PRINT "/print"
-# define FORK_ERR "failed to fork()"
-# define THREAD_CREATE_ERR "Failed to create a thread"
-# define THREAD_JOIN_ERR "Failed to join a thread"
 # define EATEN_ALL_MEALS 0
 # define SOMEONE_DIED 1
+
+/* Semaphore names */
+
+# define SEM_FORKS "/forks"
+# define SEM_PRINT "/print"
+
+/* Error Messages */
+
+# define SEMOPEN_ERR "failed to open a semaphore"
+# define FORK_ERR "failed to fork()"
+# define MALLOC_ERR "malloc() failed to allocate memory"
+# define THREAD_CREATE_ERR "Failed to create a thread"
+# define THREAD_JOIN_ERR "Failed to join a thread"
 
 typedef struct s_args {
 	int					nbr_of_philo;
@@ -74,9 +82,9 @@ typedef enum e_event_id {
 all arguments provided are digits */
 void			validate_args(int argc, char **argv);
 
-/* Atoi reimplementation. Exits the program on failure if the result 
+/* Custom atoi() implementation. Exits the program on failure if the result 
 would overflow an integer or if it would be negative */
-int				long_atoi(char *str);
+int				ft_atoi(char *str);
 
 /* Unlinks and opens "/forks" and "/print" named semaphores */
 void			open_sems(t_args *args);
@@ -120,7 +128,6 @@ static inline bool	starved(t_philo *philo)
 
 /* Frees args and philosophers array */
 void			destroy(t_args *args, t_philo *philo_array);
-
 
 static inline bool	isdigit_or_signal(char c)
 {

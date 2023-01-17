@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 20:49:41 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/16 23:21:05 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	*routine(void *philo)
 	t_philo	*casted;
 
 	casted = (t_philo *)philo;
-	while (!casted->args->someone_died 
+	while (!casted->args->someone_died
 		&& !all_ate_n_times(casted))
 	{
 		eat(casted);

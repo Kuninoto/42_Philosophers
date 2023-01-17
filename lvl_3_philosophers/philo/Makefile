@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/15 19:37:30 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/17 00:19:34 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 
 NAME = philo
-SRCS =  srcs/utils/long_atoi.c\
+SRCS =  srcs/utils/ft_atoi.c\
 		srcs/utils/panic.c\
 		srcs/utils/destroy.c\
 		srcs/utils/get_time.c\
