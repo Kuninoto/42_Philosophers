@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 12:09:12 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 21:10:26 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,14 @@
 /* CONSTANTS */
 
 # define MICROSEC 1000
-# define EATEN_ALL_MEALS 0
-# define SOMEONE_DIED 1
 
 /* Semaphore names */
 
 # define SEM_FORKS "/forks"
 # define SEM_PRINT "/print"
+# define SEM_CAN_DIE "/can_die"
+# define SEM_DEAD "/someone_died"
+# define SEM_EATEN "/eaten_philos"
 
 /* Error Messages */
 
@@ -54,6 +55,11 @@ typedef struct s_args {
 	int					must_eat_times;
 	sem_t				*forks;
 	sem_t				*print_sem;
+	sem_t				*someone_died_sem;
+	sem_t				*eaten_sem;
+	bool				end;
+	pthread_t			death_checker_tid;
+	pthread_t			eats_checker_tid;
 }				t_args;
 
 typedef struct s_philo {
@@ -62,7 +68,7 @@ typedef struct s_philo {
 	int					must_eat_meals;
 	suseconds_t			last_meal_time;
 	suseconds_t			start_time;
-	bool				can_die;
+	sem_t				*can_die;
 	bool				is_alive;
 	t_args				*args;
 }				t_philo;
@@ -76,6 +82,8 @@ typedef enum e_event_id {
 	DROP,
 }				t_event_id;
 
+void	end_processes(t_philo *philos);
+
 // INPUT ------------------------------------
 
 /* Checks if argc == 5 || 6 and if 
@@ -85,9 +93,6 @@ void			validate_args(int argc, char **argv);
 /* Custom atoi() implementation. Exits the program on failure if the result 
 would overflow an integer or if it would be negative */
 int				ft_atoi(char *str);
-
-/* Unlinks and opens "/forks" and "/print" named semaphores */
-void			open_sems(t_args *args);
 
 /* 	Initializes and fills a t_args structure */
 t_args			init_args(char **argv);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 12:10:46 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 21:12:34 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,18 @@ and prints its respective monitoring messages */
 static void	eat(t_philo *philo)
 {
 	pick_forks(philo);
-	philo->can_die = false;
+	sem_wait(philo->can_die);
 	monitoring(philo, EAT);
 	philo->last_meal_time = get_time();
+	sem_wait(philo->can_die);
 	usleep(philo->args->time_to_eat * MICROSEC);
 	drop_forks(philo);
 	philo->must_eat_meals -= 1;
-	philo->can_die = true;
+	if (philo->must_eat_meals == 0)
+	{
+		sem_post(philo->args->eaten_sem);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 static void	_sleep(t_philo *philo)
@@ -51,20 +56,11 @@ static void	_sleep(t_philo *philo)
 
 void	routine(t_philo *philo)
 {
-	while (philo->must_eat_meals != 0 && philo->is_alive)
+	while (philo->is_alive)
 	{
 		eat(philo);
 		_sleep(philo);
 		monitoring(philo, THINK);
 	}
-	if (!philo->is_alive)
-	{
-		printf("\nSOMEONE DIED!!!\n");
-		exit(SOMEONE_DIED);
-	}
-	else
-	{
-		printf("\nI've ate all my meals!!!!\n");
-		exit(EATEN_ALL_MEALS);
-	}
+	exit(EXIT_SUCCESS);
 }
