@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 00:00:49 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/17 01:44:11 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static void	*supervisor(void *philo)
 	{
 		if (starved(casted) && casted->can_die)
 		{
-			casted->args->someone_died = true;
+			// someone_died has no effect on child processes
+			//casted->args->someone_died = true;
 			monitoring(casted, DEAD);
 			sem_wait(casted->args->print_sem);
 			exit(SOMEONE_DIED);
@@ -59,6 +60,7 @@ static void	wait_childs(t_philo *philos, t_args *args)
 	int	exit_status;
 	int	i;
 
+	(void)args;
 	exit_status = 0;
 	i = 0;
 	while (i < philos->args->nbr_of_philo)
