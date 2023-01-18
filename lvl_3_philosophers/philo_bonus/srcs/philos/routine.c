@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 21:12:34 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:11:13 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 static void	pick_forks(t_philo *philo)
 {
-	sem_wait(philo->args->forks);
+	sem_wait(philo->args->sem_forks);
 	monitoring(philo, FORK);
-	sem_wait(philo->args->forks);
+	sem_wait(philo->args->sem_forks);
 	monitoring(philo, FORK);
 }
 
@@ -24,8 +24,8 @@ static void	drop_forks(t_philo *philo)
 {
 	monitoring(philo, DROP);
 	monitoring(philo, DROP);
-	sem_post(philo->args->forks);
-	sem_post(philo->args->forks);
+	sem_post(philo->args->sem_forks);
+	sem_post(philo->args->sem_forks);
 }
 
 /* Encapsulates the eat philosopher action. Picks 2 forks from the middle
@@ -34,18 +34,13 @@ and prints its respective monitoring messages */
 static void	eat(t_philo *philo)
 {
 	pick_forks(philo);
-	sem_wait(philo->can_die);
+	sem_wait(philo->sem_lock_death);
 	monitoring(philo, EAT);
 	philo->last_meal_time = get_time();
-	sem_wait(philo->can_die);
+	sem_post(philo->args->sem_meal);
+	sem_post(philo->sem_lock_death);
 	usleep(philo->args->time_to_eat * MICROSEC);
 	drop_forks(philo);
-	philo->must_eat_meals -= 1;
-	if (philo->must_eat_meals == 0)
-	{
-		sem_post(philo->args->eaten_sem);
-		exit(EXIT_SUCCESS);
-	}
 }
 
 static void	_sleep(t_philo *philo)
@@ -56,11 +51,11 @@ static void	_sleep(t_philo *philo)
 
 void	routine(t_philo *philo)
 {
-	while (philo->is_alive)
+	while (true)
 	{
 		eat(philo);
 		_sleep(philo);
 		monitoring(philo, THINK);
 	}
-	exit(EXIT_SUCCESS);
+	return ;
 }

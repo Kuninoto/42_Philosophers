@@ -1,22 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   destroy.c                                          :+:      :+:    :+:   */
+/*   end_processes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/14 18:36:24 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/18 23:12:31 by nnuno-ca         ###   ########.fr       */
+/*   Created: 2023/01/18 23:18:44 by nnuno-ca          #+#    #+#             */
+/*   Updated: 2023/01/18 23:18:56 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers_bonus.h"
 
-void	destroy(t_args *args, t_philo *philo_array)
+void	end_processes(t_philo *philos)
 {
-	sem_close(args->sem_forks);
-	sem_close(args->sem_meal);
-	sem_close(args->sem_print);
-	free(philo_array);
-	philo_array = NULL;
+	int	i;
+
+	i = 0;
+	while (i < philos->args->nbr_of_philo)
+		kill(philos[i++].pid, SIGTERM);
 }

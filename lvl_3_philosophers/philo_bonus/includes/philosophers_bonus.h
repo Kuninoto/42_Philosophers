@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_bonus.h                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 21:10:26 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:20:52 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,14 @@
 /* Semaphore names */
 
 # define SEM_FORKS "/forks"
+# define SEM_MEAL "/meal"
 # define SEM_PRINT "/print"
-# define SEM_CAN_DIE "/can_die"
-# define SEM_DEAD "/someone_died"
-# define SEM_EATEN "/eaten_philos"
+# define SEM_LOCK_DEATH "/lock_death"
 
 /* Error Messages */
 
-# define SEMOPEN_ERR "failed to open a semaphore"
-# define FORK_ERR "failed to fork()"
+# define SEMOPEN_ERR "Failed to open a semaphore"
+# define FORK_ERR "Failed to fork()"
 # define MALLOC_ERR "malloc() failed to allocate memory"
 # define THREAD_CREATE_ERR "Failed to create a thread"
 # define THREAD_JOIN_ERR "Failed to join a thread"
@@ -53,23 +52,18 @@ typedef struct s_args {
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					must_eat_times;
-	sem_t				*forks;
-	sem_t				*print_sem;
-	sem_t				*someone_died_sem;
-	sem_t				*eaten_sem;
-	bool				end;
-	pthread_t			death_checker_tid;
+	sem_t				*sem_forks;
+	sem_t				*sem_meal;
+	sem_t				*sem_print;
 	pthread_t			eats_checker_tid;
 }				t_args;
 
 typedef struct s_philo {
 	int					philo_nbr;
 	pid_t				pid;
-	int					must_eat_meals;
 	suseconds_t			last_meal_time;
 	suseconds_t			start_time;
-	sem_t				*can_die;
-	bool				is_alive;
+	sem_t				*sem_lock_death;
 	t_args				*args;
 }				t_philo;
 
@@ -105,6 +99,8 @@ t_philo			*init_philos(t_args *args);
 /* Creates Philosophers and supervisor processes */
 void			create_processes(t_args *args, t_philo *philos);
 
+void			create_eats_checker(t_args *args, t_philo *philos);
+
 /* Philosophers' routine: eat, sleep, think */
 void			routine(t_philo *philo);
 
@@ -120,6 +116,9 @@ suseconds_t		get_time(void);
 /* Prints Error: <error_msg>\n to STDERR 
 and exits the program on failure */
 void			panic(char *error_msg);
+
+/* Kills all philosopher processes */
+void			end_processes(t_philo *philos);
 
 /* Checks if a philosopher starved 
 (current time - last time philosopher had a meal)

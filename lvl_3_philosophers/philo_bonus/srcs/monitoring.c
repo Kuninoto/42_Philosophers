@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitoring.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 18:14:58 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:38:24 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	monitoring(t_philo *philo, t_event_id event)
 	const char	*events[6] = {DEAD_STR, EAT_STR, THINK_STR,
 		SLEEP_STR, TAKE_FORK_STR, DROP_FORK_STR};
 
-	sem_wait(philo->args->print_sem);
+	sem_wait(philo->args->sem_print);
 	timestamp = get_time() - philo->start_time;
 	printf("%ld %d %s", timestamp, philo->philo_nbr, events[event]);
-	sem_post(philo->args->print_sem);
+	sem_post(philo->args->sem_print);
 }
