@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_args.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 20:35:14 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:02:31 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,33 +14,26 @@
 
 #define MUST_EAT_0 "Philosophers do not need to eat\n"
 
-/* Unlinks and opens "/forks" and "/print" named counting & binary semaphores */
+/* Unlinks and opens "/forks", "/meal" and "/print" named semaphores */
 static void	open_sems(t_args *args)
 {
 	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_MEAL);
 	sem_unlink(SEM_PRINT);
-	args->forks = sem_open(SEM_FORKS, O_CREAT, S_IRWXU, args->nbr_of_philo);
-	if (args->forks == SEM_FAILED)
+	args->sem_forks = sem_open(SEM_FORKS, O_CREAT, S_IRWXU, args->nbr_of_philo);
+	if (args->sem_forks == SEM_FAILED)
 		panic(SEMOPEN_ERR);
-	args->print_sem = sem_open(SEM_PRINT, O_CREAT, S_IRWXU, 1);
-	if (args->print_sem == SEM_FAILED)
+	args->sem_meal = sem_open(SEM_MEAL, O_CREAT, S_IRWXU, 1);
+	if (args->sem_meal == SEM_FAILED)
 	{
-		sem_close(args->forks);
-		panic(SEMOPEN_ERR);
-	}
-	args->someone_died_sem = sem_open(SEM_DEAD, O_CREAT, S_IRWXU, 1);
-	if (args->someone_died_sem == SEM_FAILED)
-	{
-		sem_close(args->forks);
-		sem_close(args->print_sem);
+		sem_close(args->sem_forks);
 		panic(SEMOPEN_ERR);
 	}
-	args->eaten_sem = sem_open(SEM_DEAD, O_CREAT, S_IRWXU, 1);
-	if (args->eaten_sem == SEM_FAILED)
+	args->sem_print = sem_open(SEM_PRINT, O_CREAT, S_IRWXU, 1);
+	if (args->sem_print == SEM_FAILED)
 	{
-		sem_close(args->forks);
-		sem_close(args->print_sem);
-		sem_close(args->someone_died_sem);
+		sem_close(args->sem_forks);
+		sem_close(args->sem_meal);
 		panic(SEMOPEN_ERR);
 	}
 }
@@ -62,6 +55,5 @@ t_args	init_args(char **argv)
 		exit(EXIT_SUCCESS);
 	}
 	open_sems(&args);
-	args.end = false;
 	return (args);
 }
