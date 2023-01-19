@@ -6,13 +6,13 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/10 19:38:04 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 00:30:28 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:43:26 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/philosophers.h"
 
-#define MUST_EAT_0 "Philosophers do not need to eat\n"
+#define ARGS_0 "nbr_of_philosophers and must_eat_times must be bigger than 0\n"
 
 bool	init_args(t_args *args, char **argv)
 {
@@ -23,9 +23,9 @@ bool	init_args(t_args *args, char **argv)
 	args->must_eat_times = -1;
 	if (argv[5])
 		args->must_eat_times = ft_atoi(argv[5]);
-	if (args->must_eat_times == 0)
+	if (args->nbr_of_philo == 0 || args->must_eat_times == 0)
 	{
-		printf(MUST_EAT_0);
+		printf(ARGS_0);
 		return (false);
 	}
 	if (pthread_mutex_init(&args->monitoring_mutex, NULL) != 0)
