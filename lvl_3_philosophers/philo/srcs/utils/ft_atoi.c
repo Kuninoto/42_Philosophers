@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 00:07:57 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:40:12 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,19 @@
 
 int	ft_atoi(char *str)
 {
-	ssize_t	res;
+	int		res;
+	int		sign;
 	int		i;
 
 	res = 0;
+	sign = 1;
 	i = 0;
 	while (is_spaces(str[i]))
 		i += 1;
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-			panic("Arguments cannot be negative");
+			sign = -1;
 		i += 1;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -33,5 +35,5 @@ int	ft_atoi(char *str)
 		res = (res * 10) + (str[i] - 48);
 		i += 1;
 	}
-	return ((int)res);
+	return (res * sign);
 }
