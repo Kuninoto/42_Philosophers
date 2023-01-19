@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:01:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/18 23:11:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:58:23 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,4 @@ void	routine(t_philo *philo)
 		_sleep(philo);
 		monitoring(philo, THINK);
 	}
-	return ;
 }

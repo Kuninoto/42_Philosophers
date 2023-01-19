@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 18:23:59 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 01:01:24 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,13 @@
 # include <pthread.h> // POSIX thread API
 # include <stdbool.h> // boolean data type
 
+/* Constants */
+
 # define MICROSEC 1000
+
+/* Error messages */
+
+# define INVALID_ARGS_ERR "Invalid arguments"
 # define THREAD_CREATE_ERR "Failed to create a thread"
 # define THREAD_JOIN_ERR "Failed to join a thread"
 # define MALLOC_ERR "malloc() failed to allocate memory"
@@ -61,49 +67,45 @@ typedef enum e_event_id {
 
 // FORK UTILS ------------------------------
 
-// Init forks (mutexes)
-pthread_mutex_t	*init_forks(t_args *args);
-
-// Destroys all monitoring & forks mutexes and philosophers array
-void			destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos);
-
-// INPUT ------------------------------------
-
-/* Checks if argc == 5 || 6 and if 
-all arguments provided are digits */
-void			validate_args(int argc, char **argv);
-
-/* Custom atoi() implementation. Exits the program on failure if the result 
-would overflow an integer or if it would be negative */
-int				ft_atoi(char *str);
-
-/* 	Initializes and fills a t_args structure */
-t_args			init_args(char **argv);
+/* Init forks (mutexes) */
+pthread_mutex_t		*init_forks(t_args *args);
 
 // PHILOSOPHERS -------------------------
 
 /* Initializes philosophers array */
-t_philo			*init_philos(t_args *args, pthread_mutex_t *forks_array);
+t_philo				*init_philos(t_args *args, pthread_mutex_t *forks_array);
 
-/* Creates Philosophers and supervisor threads */
-void			create_threads(t_args *args, t_philo *philos,
-					pthread_mutex_t *forks);
+/* Creates Philosophers and supervisor threads 
+Returns false if the program should exit due to an error */
+bool				create_threads(t_args *args, t_philo *philos,
+						pthread_mutex_t *forks);
 
 /* Philosophers' routine: eat, sleep, think */
-void			*routine(void *philo);
+void				*routine(void *philo);
 
 /* Prints Philosophers' activity logs */
-void			monitoring(t_philo *philo, t_event_id event);
+void				monitoring(t_philo *philo, t_event_id event);
+
+// INPUT ------------------------------------
+
+int					ft_atoi(char *str);
+
+/* 	Initializes and fills a t_args structure, 
+returns false if the program should exit */
+bool				init_args(t_args *args, char **argv);
 
 // UTILS --------------------------
 
 /* Encapsulates the gettimeofday() procedure and 
 returns only the suseconds_t from it */
-suseconds_t		get_time(void);
+suseconds_t			get_time(void);
 
-/* Prints Error: <error_msg>\n to STDERR 
-and exits the program on failure */
-void			panic(char *error_msg);
+/* Prints Error: <error_msg>\n to STDERR */
+int					panic(char *error_msg);
+
+/* Destroys all monitoring & forks mutexes and philosophers array */
+void				destroy(t_args *args, pthread_mutex_t *forks,
+						t_philo *philos);
 
 /* Checks if a philosopher starved 
 (current time - last time philosopher had a meal)
@@ -115,27 +117,34 @@ static inline bool	starved(t_philo *philo)
 			>= philo->args->time_to_die));
 }
 
-/* Checks if all philosophers ate must_eat_times */
+/* Checks if all philosophers ate <must_eat_times> */
 static inline bool	all_ate_n_times(t_philo *philo)
 {
 	return (philo->args->satisfied_philos
 		== philo->args->nbr_of_philo);
 }
 
+/* Auxiliary function for validate_args()*/
+bool				is_all_digits(char **argv);
+
+/* Checks if argc == 5 || == 6 & if all characters represent digits */
+static inline bool	validate_args(int argc, char **argv)
+{
+	if ((argc != 5 && argc != 6) || !is_all_digits(argv))
+		return (panic(INVALID_ARGS_ERR));
+	return (true);
+}
+
 static inline bool	isdigit_or_signal(char c)
 {
-	if ((c >= '0' && c <= '9')
-		|| (c == '+' || c == '-'))
-		return (true);
-	return (false);
+	return ((c >= '0' && c <= '9')
+		|| (c == '+' || c == '-'));
 }
 
 static inline bool	is_spaces(char c)
 {
-	if (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ')
-		return (true);
-	return (false);
+	return (c == '\t' || c == '\n' || c == '\v'
+		|| c == '\f' || c == '\r' || c == ' ');
 }
 
 #endif

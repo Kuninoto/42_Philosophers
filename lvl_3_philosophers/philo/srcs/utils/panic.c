@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   on_error.c                                         :+:      :+:    :+:   */
+/*   panic.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 13:01:26 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/05 18:35:13 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:11:14 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ static size_t	ft_strlen(char *str)
 	return (i);
 }
 
-void	panic(char *error_msg)
+int	panic(char *error_msg)
 {
 	write(STDERR_FILENO, "Error: ", 7);
 	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
 	write(STDERR_FILENO, "\n", 1);
-	exit(EXIT_FAILURE);
+	return (EXIT_FAILURE);
 }

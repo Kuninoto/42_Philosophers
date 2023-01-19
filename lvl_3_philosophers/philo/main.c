@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:40:22 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/15 19:32:11 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:41:24 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	*forks;
 	t_philo			*philos;
 
-	validate_args(argc, argv);
-	args = init_args(argv);
+	if (!validate_args(argc, argv) || !init_args(&args, argv))
+		return (EXIT_FAILURE);
 	forks = init_forks(&args);
 	philos = init_philos(&args, forks);
-	create_threads(&args, philos, forks);
+	if (!create_threads(&args, philos, forks))
+		return (EXIT_FAILURE);
 	destroy(&args, forks, philos);
 	return (EXIT_SUCCESS);
 }
