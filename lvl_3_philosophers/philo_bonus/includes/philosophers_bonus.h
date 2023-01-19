@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:35:17 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/18 23:20:52 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/18 23:55:25 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,6 @@ typedef enum e_event_id {
 	FORK,
 	DROP,
 }				t_event_id;
-
-void	end_processes(t_philo *philos);
 
 // INPUT ------------------------------------
 

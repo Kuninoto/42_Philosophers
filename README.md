@@ -1,6 +1,8 @@
 # Philosophers (42Porto - 42Cursus) <img src="https://github.com/devicons/devicon/blob/master/icons/linux/linux-original.svg" title="Linux" alt="Linux Logo" width="50" height="60" align="right" />&nbsp; <img src="https://github.com/devicons/devicon/blob/master/icons/c/c-original.svg" title="C" alt="C Logo" width="55" height="55" align="right" />&nbsp;  
 
-## Grade: 125/100
+## Grade: 100/100
+
+![](./extras/showcase.gif)
 
 ### Installing and running the project:
 
@@ -23,6 +25,12 @@
 
 Mandatory: Solving the dining philosophers problem using **threads** and **mutexes**  
 Bonus: Solving the same problem but this time with **processes** and **semaphores**  
+
+#### Side note/warning for 42 students visiting:
+I didn't submitted bonus but left its folder here. All works correctly but has leaks on the threads.  
+Threads must return their routine function in order to free their resources and because on bonus  
+we must use processes I use exit() on the supervisor thread to exit the philosopher (that died) process, causing leaks.
+Anyways, it's the always saying: Do not copy or use code you don't understand.
 
 #### Makefile Available Targets:  
 `make` or `make all` - compiles philo or philo_bonus (depending on the folder you're in)   

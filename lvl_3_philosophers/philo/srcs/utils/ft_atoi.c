@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 01:54:27 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:07:57 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,5 @@ int	ft_atoi(char *str)
 		res = (res * 10) + (str[i] - 48);
 		i += 1;
 	}
-	if (res > INT_MAX || res <= INT_MIN)
-		panic("One of the arguments overflows integer type");
 	return ((int)res);
 }

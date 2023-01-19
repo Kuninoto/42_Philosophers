@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   create_threads.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 17:06:35 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 18:36:07 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/19 00:59:25 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static void	*supervisor(void *philos)
 	int		i;
 
 	casted = (t_philo *)philos;
-	while (true)
+	while (!all_ate_n_times(casted))
 	{
 		i = -1;
 		while (++i < casted->args->nbr_of_philo)
@@ -35,21 +35,15 @@ static void	*supervisor(void *philos)
 			}
 			pthread_mutex_unlock(&casted[i].can_die);
 			if (casted[i].eaten_meals == casted->args->must_eat_times)
-			{
 				casted->args->satisfied_philos += 1;
-				if (all_ate_n_times(casted))
-				{
-					printf("Every Philosopher had %d meals!\n",
-						casted->args->must_eat_times);
-					return (NULL);
-				}
-			}
 		}
 	}
+	printf("Every Philosopher had %d meals!\n", casted->args->must_eat_times);
+	return (NULL);
 }
 
 /* Creates and makes main thread join supervisor thread */
-static void	create_supervisor(t_args *args, pthread_mutex_t *forks,
+static bool	create_supervisor(t_args *args, pthread_mutex_t *forks,
 											t_philo *philos)
 {
 	pthread_t	supervisor_tid;
@@ -58,43 +52,41 @@ static void	create_supervisor(t_args *args, pthread_mutex_t *forks,
 			supervisor, (void *)philos) != 0)
 	{
 		destroy(args, forks, philos);
-		panic(THREAD_CREATE_ERR);
+		return (panic(THREAD_CREATE_ERR));
 	}
 	if (pthread_join(supervisor_tid, NULL) != 0)
 	{
 		destroy(args, forks, philos);
-		panic(THREAD_JOIN_ERR);
+		return (panic(THREAD_JOIN_ERR));
 	}
+	return (true);
 }
 
-void	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
+bool	create_threads(t_args *args, t_philo *philos, pthread_mutex_t *forks)
 {
 	int	i;
 
-	i = 0;
-	while (i < args->nbr_of_philo)
+	i = -1;
+	while (++i < args->nbr_of_philo)
 	{
 		philos[i].start_time = get_time();
 		if (pthread_create(&philos[i].t_id, NULL,
 				routine, (void *)&philos[i]) != 0)
 		{
 			destroy(args, forks, philos);
-			panic(THREAD_CREATE_ERR);
+			return (panic(THREAD_CREATE_ERR));
 		}
-		i += 1;
 	}
-	create_supervisor(args, forks, philos);
-	i = 0;
-	while (i < args->nbr_of_philo)
+	if (!create_supervisor(args, forks, philos))
+		return (EXIT_FAILURE);
+	i = -1;
+	while (++i < args->nbr_of_philo)
 	{
 		if (pthread_join(philos[i].t_id, NULL) != 0)
 		{
 			destroy(args, forks, philos);
-			panic(THREAD_JOIN_ERR);
+			return (panic(THREAD_JOIN_ERR));
 		}
-		i += 1;
 	}
+	return (true);
 }
-
-/* One philosopher is deadlocking because it is locking the same mutex twice
-aka his left mutex is the same as the right one */

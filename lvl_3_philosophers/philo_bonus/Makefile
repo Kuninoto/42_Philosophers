@@ -6,7 +6,7 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/18 23:20:30 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/18 23:57:27 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ SRCS =  srcs/utils/ft_atoi.c\
 		srcs/philos/init_philos.c\
 		srcs/philos/routine.c\
 		srcs/create_processes.c\
-		srcs/create_checkers.c\
+		srcs/create_checker.c\
 		srcs/monitoring.c\
 	   	main.c
 
