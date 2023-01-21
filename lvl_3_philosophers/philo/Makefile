@@ -6,12 +6,12 @@
 #    By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/29 12:34:39 by nnuno-ca          #+#    #+#              #
-#    Updated: 2023/01/19 00:26:14 by nnuno-ca         ###   ########.fr        #
+#    Updated: 2023/01/21 01:39:11 by nnuno-ca         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -I./includes
 RM = rm -rf
 
 NAME = philo
@@ -43,6 +43,8 @@ fclean: clean
 	
 re: fclean all
 
-.PHONY: all clean fclean re
+run: all clean
+
+.PHONY: all clean fclean re run
 
 .SILENT:

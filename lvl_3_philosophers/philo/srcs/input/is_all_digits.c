@@ -6,11 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 14:46:47 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 00:42:27 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:37:54 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 bool	is_all_digits(char **argv)
 {

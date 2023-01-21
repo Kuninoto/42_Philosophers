@@ -6,11 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/14 16:59:41 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 00:45:57 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:37:32 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 t_philo	*init_philos(t_args *args, pthread_mutex_t *forks_array)
 {

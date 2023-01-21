@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   destroy.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nnuno-ca <nnuno-ca@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 18:53:37 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 17:20:14 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:38:07 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 void	destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos)
 {

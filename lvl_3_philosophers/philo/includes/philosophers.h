@@ -6,7 +6,7 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 12:36:54 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 01:01:24 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:39:41 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,10 @@ bool				is_all_digits(char **argv);
 static inline bool	validate_args(int argc, char **argv)
 {
 	if ((argc != 5 && argc != 6) || !is_all_digits(argv))
-		return (panic(INVALID_ARGS_ERR));
+	{
+		panic(INVALID_ARGS_ERR);
+		return (false);
+	}
 	return (true);
 }
 

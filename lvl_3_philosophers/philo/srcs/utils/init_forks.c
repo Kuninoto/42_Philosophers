@@ -6,11 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/15 18:54:50 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/16 22:47:38 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:38:19 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 pthread_mutex_t	*init_forks(t_args *args)
 {
