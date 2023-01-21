@@ -6,11 +6,11 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 18:07:42 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/17 02:48:29 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:38:30 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/philosophers.h"
+#include "philosophers.h"
 
 #define TAKE_FORK_STR "has taken a fork 🍴\n"
 #define DROP_FORK_STR "has dropped a fork 🍴\n"

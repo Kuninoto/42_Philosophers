@@ -6,12 +6,12 @@
 /*   By: nnuno-ca <nnuno-ca@student.42porto.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/29 15:34:11 by nnuno-ca          #+#    #+#             */
-/*   Updated: 2023/01/19 01:40:12 by nnuno-ca         ###   ########.fr       */
+/*   Updated: 2023/01/21 01:38:10 by nnuno-ca         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <limits.h>
-#include "../../includes/philosophers.h"
+#include "philosophers.h"
 
 int	ft_atoi(char *str)
 {
