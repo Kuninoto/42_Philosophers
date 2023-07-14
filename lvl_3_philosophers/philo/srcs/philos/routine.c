@@ -14,60 +14,84 @@
 
 static void	pick_forks(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	pthread_mutex_lock(philo->right_fork);
-	monitoring(philo, FORK);
-	monitoring(philo, FORK);
+	if (philo->philo_nbr % 2 == 0)
+	{
+		pthread_mutex_lock(philo->left_fork);
+		monitoring(philo, FORK);
+		pthread_mutex_lock(philo->right_fork);
+		monitoring(philo, FORK);
+	}
+	else
+	{
+		pthread_mutex_lock(philo->right_fork);
+		monitoring(philo, FORK);
+		pthread_mutex_lock(philo->left_fork);
+		monitoring(philo, FORK);
+	}
 }
 
 static void	drop_forks(t_philo *philo)
 {
-	pthread_mutex_unlock(philo->left_fork);
-	pthread_mutex_unlock(philo->right_fork);
-	monitoring(philo, DROP);
-	monitoring(philo, DROP);
+	if (philo->philo_nbr % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->left_fork);
+		monitoring(philo, DROP);
+		pthread_mutex_unlock(philo->right_fork);
+		monitoring(philo, DROP);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->right_fork);
+		monitoring(philo, DROP);
+		pthread_mutex_unlock(philo->left_fork);
+		monitoring(philo, DROP);
+	}
 }
 
-/* Encapsulates the eat philosopher action. 
+/* Encapsulates the eat philosopher action.
 Locks left and right fork, sleeps time_to_eat miliseconds,
-unlocks left and right fork (mutexes) and prints its respective 
+unlocks left and right fork (mutexes) and prints its respective
 monitoring messages */
 static void	eat(t_philo *philo)
 {
 	pick_forks(philo);
-	pthread_mutex_lock(&philo->can_die);
-	monitoring(philo, EAT);
+	pthread_mutex_lock(&philo->args->monitoring_mutex);
 	philo->last_meal_time = get_time();
-	pthread_mutex_unlock(&philo->can_die);
+	philo->eaten_meals += 1;
+	pthread_mutex_unlock(&philo->args->monitoring_mutex);
+	monitoring(philo, EAT);
 	usleep(philo->args->time_to_eat * MICROSEC);
 	drop_forks(philo);
-	philo->eaten_meals += 1;
 }
 
-static void	_sleep(t_philo *philo)
+static inline void	_sleep(t_philo *philo)
 {
 	monitoring(philo, SLEEP);
 	usleep(philo->args->time_to_sleep * MICROSEC);
 }
 
-void	*routine(void *philo)
+void	*routine(void *_philo)
 {
-	t_philo	*casted;
+	t_philo	*philo;
 
-	casted = (t_philo *)philo;
-	while (!casted->args->someone_died
-		&& !all_ate_n_times(casted))
+	philo = (t_philo *)_philo;
+	if (philo->args->nbr_of_philo == 1)
 	{
-		if (casted->args->nbr_of_philo == 1)
+		monitoring(philo, FORK);
+		return (NULL);
+	}
+	while (true)
+	{
+		pthread_mutex_lock(&philo->args->monitoring_mutex);
+		if (philo->args->simulation_should_end)
 		{
-			pthread_mutex_lock(casted->left_fork);
-			monitoring(philo, FORK);
-			casted->last_meal_time = get_time();
-			return (NULL);
+			pthread_mutex_unlock(&philo->args->monitoring_mutex);
+			break ;
 		}
-		eat(casted);
-		_sleep(casted);
-		monitoring(casted, THINK);
+		pthread_mutex_unlock(&philo->args->monitoring_mutex);
+		eat(philo);
+		_sleep(philo);
+		monitoring(philo, THINK);
 	}
 	return (NULL);
 }

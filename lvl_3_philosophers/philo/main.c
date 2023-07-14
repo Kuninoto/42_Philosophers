@@ -18,11 +18,11 @@ int	main(int argc, char **argv)
 	pthread_mutex_t	*forks;
 	t_philo			*philos;
 
-	if (!validate_args(argc, argv) || !init_args(&args, argv))
+	if (!valid_args(argc, argv) || !init_args(&args, argv))
 		return (EXIT_FAILURE);
 	forks = init_forks(&args);
 	philos = init_philos(&args, forks);
-	if (!create_threads(&args, philos, forks))
+	if (!launch_threads_and_join(&args, philos, forks))
 		return (EXIT_FAILURE);
 	destroy(&args, forks, philos);
 	return (EXIT_SUCCESS);

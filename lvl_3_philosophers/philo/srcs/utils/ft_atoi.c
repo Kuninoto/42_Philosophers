@@ -11,13 +11,19 @@
 /* ************************************************************************** */
 
 #include <limits.h>
-#include "philosophers.h"
+#include <stdbool.h>
+
+static inline bool	is_spaces(char c)
+{
+	return (c == '\t' || c == '\n' || c == '\v'
+		|| c == '\f' || c == '\r' || c == ' ');
+}
 
 int	ft_atoi(char *str)
 {
-	int		res;
-	int		sign;
-	int		i;
+	int	res;
+	int	sign;
+	int	i;
 
 	res = 0;
 	sign = 1;

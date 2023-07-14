@@ -31,7 +31,7 @@ void	*eats_checker(void *philos)
 		satisfied_philos += 1;
 	}
 	printf("Every Philosopher ate %d meals!\n",
-					casted->args->must_eat_times);
+		casted->args->must_eat_times);
 	sem_wait(casted->args->sem_print);
 	end_processes(philos);
 	return (NULL);
@@ -39,7 +39,8 @@ void	*eats_checker(void *philos)
 
 void	create_eats_checker(t_args *args, t_philo *philos)
 {
-	if (pthread_create(&args->eats_checker_tid, NULL, eats_checker, (void *)philos) != 0)
+	if (pthread_create(&args->eats_checker_tid, NULL,
+			eats_checker, (void *)philos) != 0)
 		destroy(args, philos);
 	pthread_detach(args->eats_checker_tid);
 }

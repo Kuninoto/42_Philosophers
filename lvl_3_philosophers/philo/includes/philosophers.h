@@ -40,8 +40,7 @@ typedef struct s_args {
 	int					time_to_sleep;
 	int					must_eat_times;
 	pthread_mutex_t		monitoring_mutex;
-	int					satisfied_philos;
-	bool				someone_died;
+	bool				simulation_should_end;
 }				t_args;
 
 typedef struct s_philo {
@@ -52,7 +51,6 @@ typedef struct s_philo {
 	suseconds_t			last_meal_time;
 	pthread_t			t_id;
 	suseconds_t			start_time;
-	pthread_mutex_t		can_die;
 	t_args				*args;
 }				t_philo;
 
@@ -77,20 +75,22 @@ t_philo				*init_philos(t_args *args, pthread_mutex_t *forks_array);
 
 /* Creates Philosophers and supervisor threads 
 Returns false if the program should exit due to an error */
-bool				create_threads(t_args *args, t_philo *philos,
+bool				launch_threads_and_join(t_args *args, t_philo *philos,
 						pthread_mutex_t *forks);
 
 /* Philosophers' routine: eat, sleep, think */
-void				*routine(void *philo);
+void				*routine(void *_philo);
 
 /* Prints Philosophers' activity logs */
-void				monitoring(t_philo *philo, t_event_id event);
+void				monitoring(t_philo *philo, t_event_id event_id);
 
 // INPUT ------------------------------------
 
-int					ft_atoi(char *str);
+/* Checks if argc == 5 || argc == 6 & if all arguments
+are composed by digits or signals */
+bool				valid_args(int argc, char **argv);
 
-/* 	Initializes and fills a t_args structure, 
+/* Initializes and fills a t_args structure, 
 returns false if the program should exit */
 bool				init_args(t_args *args, char **argv);
 
@@ -100,8 +100,9 @@ bool				init_args(t_args *args, char **argv);
 returns only the suseconds_t from it */
 suseconds_t			get_time(void);
 
-/* Prints Error: <error_msg>\n to STDERR */
-int					panic(char *error_msg);
+/* Calls destroy() and print Error: <error_msg>\n to STDERR */
+int					panic(t_args *args, pthread_mutex_t *forks,
+						t_philo *philos, char *error_msg);
 
 /* Destroys all monitoring & forks mutexes and philosophers array */
 void				destroy(t_args *args, pthread_mutex_t *forks,
@@ -117,37 +118,6 @@ static inline bool	starved(t_philo *philo)
 			>= philo->args->time_to_die));
 }
 
-/* Checks if all philosophers ate <must_eat_times> */
-static inline bool	all_ate_n_times(t_philo *philo)
-{
-	return (philo->args->satisfied_philos
-		== philo->args->nbr_of_philo);
-}
+int					ft_atoi(char *str);
 
-/* Auxiliary function for validate_args()*/
-bool				is_all_digits(char **argv);
-
-/* Checks if argc == 5 || == 6 & if all characters represent digits */
-static inline bool	validate_args(int argc, char **argv)
-{
-	if ((argc != 5 && argc != 6) || !is_all_digits(argv))
-	{
-		panic(INVALID_ARGS_ERR);
-		return (false);
-	}
-	return (true);
-}
-
-static inline bool	isdigit_or_signal(char c)
-{
-	return ((c >= '0' && c <= '9')
-		|| (c == '+' || c == '-'));
-}
-
-static inline bool	is_spaces(char c)
-{
-	return (c == '\t' || c == '\n' || c == '\v'
-		|| c == '\f' || c == '\r' || c == ' ');
-}
-
-#endif
+#endif // PHILOSOPHERS_H
