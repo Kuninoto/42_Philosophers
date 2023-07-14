@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "philosophers.h"
 
 static size_t	ft_strlen(char *str)
 {
@@ -23,8 +22,10 @@ static size_t	ft_strlen(char *str)
 	return (i);
 }
 
-int	panic(char *error_msg)
+int	panic(t_args *args, pthread_mutex_t *forks,
+		t_philo *philos, char *error_msg)
 {
+	destroy(args, forks, philos);
 	write(STDERR_FILENO, "Error: ", 7);
 	write(STDERR_FILENO, error_msg, ft_strlen(error_msg));
 	write(STDERR_FILENO, "\n", 1);

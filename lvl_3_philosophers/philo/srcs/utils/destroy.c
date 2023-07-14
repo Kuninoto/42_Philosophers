@@ -16,13 +16,13 @@ void	destroy(t_args *args, pthread_mutex_t *forks, t_philo *philos)
 {
 	int	i;
 
-	pthread_mutex_destroy(&args->monitoring_mutex);
+	if (args)
+		pthread_mutex_destroy(&args->monitoring_mutex);
 	if (forks)
 	{
 		i = 0;
 		while (i < args->nbr_of_philo)
 		{
-			pthread_mutex_destroy(&philos[i].can_die);
 			pthread_mutex_destroy(&forks[i]);
 			philos[i].left_fork = NULL;
 			philos[i].right_fork = NULL;

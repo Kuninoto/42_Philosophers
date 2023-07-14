@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-#define ARGS_0 "nbr_of_philosophers and must_eat_times must be bigger than 0\n"
+#define AGR_0_ERR "nbr_of_philosophers and must_eat_times must be bigger than 0"
 
 bool	init_args(t_args *args, char **argv)
 {
@@ -25,15 +25,14 @@ bool	init_args(t_args *args, char **argv)
 		args->must_eat_times = ft_atoi(argv[5]);
 	if (args->nbr_of_philo == 0 || args->must_eat_times == 0)
 	{
-		printf(ARGS_0);
+		panic(NULL, NULL, NULL, AGR_0_ERR);
 		return (false);
 	}
 	if (pthread_mutex_init(&args->monitoring_mutex, NULL) != 0)
 	{
-		panic(MUTEX_INIT_ERR);
+		panic(NULL, NULL, NULL, MUTEX_INIT_ERR);
 		return (false);
 	}
-	args->satisfied_philos = 0;
-	args->someone_died = false;
+	args->simulation_should_end = false;
 	return (true);
 }

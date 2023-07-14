@@ -18,19 +18,16 @@
 	make clean
 5- Run your new dining philosopher simulation program!
 
-	./philo nbr_of_philos time_to_die time_to_eat time_to_sleep [nbr_of_times_each_philo_must_eat]
+	./philo <nbr_of_philos> <time_to_die> <time_to_eat> <time_to_sleep> [nbr_of_times_each_philo_must_eat]
 
-###  Subject: [Philosophers en_subject](./extras/en.subject_philosophers.pdf)
-
+###  Subject (v10): [Philosophers en_subject](./extras/en.subject_philosophers.pdf)
 
 Mandatory: Solving the dining philosophers problem using **threads** and **mutexes**  
 Bonus: Solving the same problem but this time with **processes** and **semaphores**  
 
 #### Side note/warning for 42 students visiting:
-I didn't submitted bonus but left its folder here. All works correctly but has leaks on the threads.  
-Threads must return their routine function in order to free their resources and because on bonus  
-we must use processes I use exit() on the supervisor thread to exit the philosopher (that died) process, causing leaks.
-Anyways, it's the always saying: Do not copy or use code you don't understand.
+I did the bonus part but I did NOT delivered it, it isn't in its final form and neither I tested it
+sufficiently to guarantee that it's fully working.  
 
 #### Makefile Available Targets:  
 `make` or `make all` - compiles philo or philo_bonus (depending on the folder you're in)   
@@ -40,43 +37,43 @@ Anyways, it's the always saying: Do not copy or use code you don't understand.
 
 ### Useful links:  
 General thread understanding:  
-https://www.youtube.com/watch?v=ldJ8WGZVXZk  
-https://www.youtube.com/watch?v=uA8X5zNOGw8&list=PL9IEJIKnBJjFZxuqyJ9JqVYmuFZHr7CFM  
-https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2  
-https://www.geeksforgeeks.org/multithreading-c-2/  
-https://www.youtube.com/watch?v=FY9livorrJI  
-https://www.youtube.com/watch?v=xoXzp4B8aQk  
+[Introduction to threads (pthreads) | C programming](https://www.youtube.com/watch?v=ldJ8WGZVXZk)  
+[How to create and join threads in C (pthreads)](https://www.youtube.com/watch?v=uA8X5zNOGw8&list=PL9IEJIKnBJjFZxuqyJ9JqVYmuFZHr7CFM)  
+[Short introduction to threads (pthreads)](https://www.youtube.com/watch?v=d9s_d28yJq0&list=PLfqABt5AS4FmuQf70psXrsMLEDQXNkLq2)  
+[Multithreading in C](https://www.geeksforgeeks.org/multithreading-c-2/)  
+[What are race conditions](https://www.youtube.com/watch?v=FY9livorrJI)  
+[How to create threads in a loop (pthread_create)](https://www.youtube.com/watch?v=xoXzp4B8aQk)  
 
 Threads vs. Processes:  
-https://www.geeksforgeeks.org/difference-between-process-and-thread/  
-https://www.youtube.com/watch?v=IKG1P4rgm54  
+[Difference between process and thread](https://www.geeksforgeeks.org/difference-between-process-and-thread/)  
+[Difference between processes and threads](https://www.youtube.com/watch?v=IKG1P4rgm54)  
 
 Mutex:  
-https://www.youtube.com/watch?v=oq29KUy29iQ  
-https://www.geeksforgeeks.org/mutex-lock-for-linux-thread-synchronization/  
+[What is a mutex in C? (pthread_mutex)](https://www.youtube.com/watch?v=oq29KUy29iQ)  
+[Mutex lock for Linux Thread Synchronization](https://www.geeksforgeeks.org/mutex-lock-for-linux-thread-synchronization/)  
 
 Project Guide:  
 https://github.com/TommyJD93/Philosophers  
 
 General semaphore understanding:  
-https://www.geeksforgeeks.org/semaphores-in-process-synchronization/  
-https://www.geeksforgeeks.org/use-posix-semaphores-c/  
-https://www.youtube.com/watch?v=YSn8_XdGH7c  
-https://www.youtube.com/watch?v=XDIOC2EY5JE  
-https://www.youtube.com/watch?v=ukM_zzrIeXs  
-https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_semaphores.htm  
-https://www.timesmojo.com/can-semaphore-be-initialized-to-negative/  
-https://stackoverflow.com/questions/15164484/when-to-call-sem-unlink  
+[Semaphores in Process Synchronization](https://www.geeksforgeeks.org/semaphores-in-process-synchronization/)  
+[How to use POSIX semaphores in C language](https://www.geeksforgeeks.org/use-posix-semaphores-c/)  
+[Introduction to semaphores in C](https://www.youtube.com/watch?v=YSn8_XdGH7c)  
+[Semaphores](https://www.youtube.com/watch?v=XDIOC2EY5JE)  
+[What is a semaphore? How do they work? (Example in C)](https://www.youtube.com/watch?v=ukM_zzrIeXs)  
+[Inter Process Communication - Semaphores](https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_semaphores.htm)  
+[Can Semaphore Be Initialized To Negative?](https://www.timesmojo.com/can-semaphore-be-initialized-to-negative/)  
+[When to call sem_unlink()?](https://stackoverflow.com/questions/15164484/when-to-call-sem-unlink)  
 
-Mutex vs. Semaphores:  
-https://www.geeksforgeeks.org/mutex-vs-semaphore/  
-https://www.youtube.com/watch?v=8wcuLCvMmF8  
+Mutex vs. Semaphore:  
+[Mutex vs Semaphore](https://www.geeksforgeeks.org/mutex-vs-semaphore/)  
+[Semaphore Vs. Mutex - A Clear Understanding](https://www.youtube.com/watch?v=8wcuLCvMmF8)  
 
-Mutex vs. Semaphores Rule of Thumb:
+Mutex vs. Semaphore Rule of Thumb:
 <table>
  <tr>
    <th>Mutex</th>
-   <th>Semaphores</th>
+   <th>Semaphore</th>
  </tr>
  <tr>
    <td>Behaves like a lock</td>
@@ -92,21 +89,21 @@ Mutex vs. Semaphores Rule of Thumb:
  </tr>
 </table>
 
-fork() documentation:  
+fork() IBM documentation:  
 https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-fork-create-new-process#rtfor  
 
-waitpid() documentation:  
+waitpid() IBM documentation:  
 https://www.ibm.com/docs/en/zos/2.1.0?topic=functions-waitpid-wait-specific-child-process-end
 
-sem_open() documentation:
+sem_open() IBM documentation:
 https://www.ibm.com/docs/en/i/7.1?topic=ssw_ibm_i_71/apis/ipcsemo.html  
 
-Inter Process Communication
-https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_shared_memory.htm  
+Inter Process Communication  
+[Shared memory](https://www.tutorialspoint.com/inter_process_communication/inter_process_communication_shared_memory.htm)  
 
 ## Disclaimer
 > At [42School](https://en.wikipedia.org/wiki/42_(school)), almost every project must be written in accordance to the [Norm](./extras/en_norm.pdf), the schools' coding standard. As a result, the implementation of certain parts may appear strange and for sure had room for improvement.
 
 ---
-Made by Nuno Carvalho (Kuninoto) | nnuno-ca@student.42porto.com  
+Made by Nuno Carvalho (Kuninoto) | kuninoto@proton.me  
 <div id="badge"> <a href="https://www.linkedin.com/in/nuno-carvalho-218822247"/> <img src="https://img.shields.io/badge/LinkedIn-blue?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn Badge"/>&nbsp;

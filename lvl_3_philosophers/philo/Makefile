@@ -11,40 +11,45 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I./includes
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread
+INC = -I./includes
+VPATH = srcs srcs/input srcs/philos srcs/utils
 RM = rm -rf
 
-NAME = philo
-SRCS =  srcs/utils/ft_atoi.c\
-		srcs/utils/panic.c\
-		srcs/utils/destroy.c\
-		srcs/utils/get_time.c\
-		srcs/utils/init_forks.c\
-		srcs/input/is_all_digits.c\
-		srcs/input/init_args.c\
-		srcs/philos/init_philos.c\
-		srcs/philos/routine.c\
-		srcs/create_threads.c\
-		srcs/monitoring.c\
-	   	main.c
+INPUT = valid_args init_args
+PHILOS = init_philos routine
+UTILS = ft_atoi panic destroy get_time init_forks
+GENERAL = launch_threads_and_join monitoring
 
-OBJS = $(SRCS:.c=.o)
+NAME = philo
+SRCS = $(addsuffix .c, $(INPUT))\
+	   $(addsuffix .c, $(PHILOS))\
+	   $(addsuffix .c, $(UTILS))\
+	   $(addsuffix .c, $(GENERAL))\
+	   main.c
+
+OBJ_DIR = obj
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -pthread $(OBJS) -o philo
+$(OBJ_DIR):
+	mkdir -p obj
+
+$(OBJ_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@ $(INC)
+
+$(NAME): $(OBJ_DIR) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -pthread -o $(NAME)
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJ_DIR)
 	
 fclean: clean
 	$(RM) $(NAME)
 	
 re: fclean all
 
-run: all clean
-
-.PHONY: all clean fclean re run
+.PHONY: all clean fclean re
 
 .SILENT:
